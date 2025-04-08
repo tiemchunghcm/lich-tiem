@@ -2,167 +2,64 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Lịch tiêm</title>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Quicksand', sans-serif;
-      background-color: #fef6fb;
-      color: #34495e;
-      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fdf6f0;
       padding: 20px;
+      color: #333;
     }
-
-    #vaccine-schedule {
-      max-width: 700px;
-      margin: 30px auto;
-      background: #ffffff;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.05);
-      padding: 30px;
-    }
-
-    h2 {
+    h1 {
       text-align: center;
-      color: #e67e9f;
+      color: #4a4e69;
     }
-
-    input[type="date"] {
+    .form-section {
+      max-width: 700px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+      color: #555;
+    }
+    input[type="date"], select {
       padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
       width: 100%;
-      box-sizing: border-box;
-      margin-top: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fffefc;
     }
-
     button {
       margin-top: 20px;
-      padding: 10px 20px;
+      background-color: #c9ada7;
+      color: white;
       border: none;
+      padding: 12px 20px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 16px;
+      font-weight: 600;
+      transition: background 0.3s ease;
     }
-
-    button#view {
-      background-color: #e67e9f;
-      color: white;
+    button:hover {
+      background-color: #ac9891;
     }
-
-    button#downloadBtn {
-      background-color: #82ccdd;
-      color: white;
-      display: none;
-      margin-left: 10px;
-    }
-
     table {
       width: 100%;
+      margin-top: 30px;
       border-collapse: collapse;
-      margin-top: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      overflow: hidden;
     }
-
     th, td {
       padding: 12px;
-      border: 1px solid #ddd;
       text-align: left;
-    }
-
-    th {
-      background-color: #f8c8dc;
-    }
-
-    tr:nth-child(even) {
-      background-color: #fdf1f5;
-    }
-  </style>
-</head>
-<body>
-  <div id="vaccine-schedule">
-    <h2>📅 Lịch tiêm</h2>
-
-    <label for="dob">Ngày sinh của trẻ:</label>
-    <input type="date" id="dob" />
-
-    <div>
-      <button id="view" onclick="showSchedule()">🔍 Xem lịch tiêm</button>
-      <button id="downloadBtn" onclick="downloadPDF()">⬇️ Tải PDF</button>
-    </div>
-
-    <div id="schedule-output"></div>
-  </div>
-
-  <!-- html2pdf -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-  <script>
-    function showSchedule() {
-      const dobInput = document.getElementById("dob").value;
-      if (!dobInput) {
-        alert("Vui lòng nhập ngày sinh của trẻ.");
-        return;
-      }
-
-      const dob = new Date(dobInput);
-      const vaccines = [
-        { name: "Viêm gan B mũi 1", days: 0 },
-        { name: "BCG (lao)", days: 0 },
-        { name: "Viêm gan B mũi 2", days: 30 },
-        { name: "5 trong 1 mũi 1", days: 60 },
-        { name: "5 trong 1 mũi 2", days: 90 },
-        { name: "5 trong 1 mũi 3", days: 120 },
-        { name: "Viêm gan B mũi 3", days: 150 },
-        { name: "Sởi - Rubella", days: 270 },
-        { name: "Sởi mũi 2", days: 365 }
-      ];
-
-      let output = `
-        <div id="schedule-content">
-          <h3>📋 Lịch tiêm dự kiến:</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Vaccine</th>
-                <th>Ngày dự kiến</th>
-              </tr>
-            </thead>
-            <tbody>
-      `;
-
-      vaccines.forEach(vaccine => {
-        const date = new Date(dob);
-        date.setDate(date.getDate() + vaccine.days);
-        output += `
-          <tr>
-            <td>${vaccine.name}</td>
-            <td>${date.toLocaleDateString()}</td>
-          </tr>
-        `;
-      });
-
-      output += `
-            </tbody>
-          </table>
-        </div>
-      `;
-
-      document.getElementById("schedule-output").innerHTML = output;
-      document.getElementById("downloadBtn").style.display = "inline-block";
-    }
-
-    function downloadPDF() {
-      const element = document.getElementById("schedule-content");
-      const opt = {
-        margin: 0.5,
-        filename: 'lich-tiem-chung.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-      };
-      html2pdf().set(opt).from(element).save();
-    }
-  </script>
-</body>
-</html>
+      border-bottom: 1px solid #eee
