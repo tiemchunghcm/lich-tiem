@@ -6,9 +6,9 @@
     <title>Lịch tiêm</title>
     <style>
         body {
-            font-family: Segoe UI, sans-serif;
-            background-color: #fef6f9;
-            color: #2c3e50;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f9f0f5;
+            color: #5a5a7a;
             line-height: 1.6;
             max-width: 800px;
             margin: 0 auto;
@@ -17,143 +17,191 @@
         .container {
             max-width: 800px;
             margin: auto;
-            background: #fffafc;
+            background: #fff8fb;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
+            box-shadow: 0 5px 15px rgba(210, 180, 205, 0.3);
+            border: 1px solid #f2dae7;
+        }
         h1 {
-            color: #2c3e50;
+            color: #9c7aa5;
             text-align: center;
             margin-bottom: 30px;
+            font-weight: 500;
         }
-        .container {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        h2 {
+            color: #9c7aa5;
+            margin-top: 25px;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #7c668d;
         }
         input, select {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 10px;
+            border: 1px solid #e8d1e4;
+            border-radius: 8px;
             box-sizing: border-box;
+            background-color: #fefafd;
+            color: #6d6a8c;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #c9abda;
+            box-shadow: 0 0 0 2px rgba(201, 171, 218, 0.2);
         }
         button {
-            background-color: #3498db;
+            background-color: #a588c0;
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 10px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
         }
         button:hover {
-            background-color: #2980b9;
+            background-color: #8e6cb2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(174, 136, 192, 0.3);
         }
         #results {
-            margin-top: 30px;
+            margin-top: 35px;
             display: none;
         }
         .schedule-item {
-            background-color: white;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-left: 4px solid #3498db;
-            border-radius: 4px;
+            background-color: #fcf9ff;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid #bda0cf;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(201, 171, 218, 0.15);
         }
         .due {
-            border-left-color: #e74c3c;
+            border-left-color: #f7a5a5;
         }
         .coming {
-            border-left-color: #f39c12;
+            border-left-color: #ffd1a4;
         }
         .complete {
-            border-left-color: #2ecc71;
+            border-left-color: #aee0bc;
         }
         .vaccine-date {
             font-weight: bold;
         }
         .vaccine-info {
-            color: #7f8c8d;
+            color: #8e8aa6;
             font-size: 0.9em;
         }
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(201, 171, 218, 0.15);
         }
         th, td {
-            padding: 12px;
+            padding: 14px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #f0e5f5;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #e9ddff;
+            color: #6d6a8c;
+            font-weight: 500;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:nth-child(even) {
+            background-color: #fdf6ff;
         }
         .status-due {
-            color: #e74c3c;
+            color: #ed7c7c;
             font-weight: bold;
         }
         .status-coming {
-            color: #f39c12;
+            color: #f5a742;
         }
         .status-complete {
-            color: #2ecc71;
+            color: #67c17d;
         }
         #previousVaccines {
-            margin-top: 15px;
+            margin-top: 20px;
             display: none;
+            background-color: #f8f2ff;
+            padding: 15px;
+            border-radius: 10px;
         }
         .previous-vaccine {
-            margin-bottom: 10px;
-            background-color: #eef8ff;
-            padding: 10px;
-            border-radius: 5px;
+            margin-bottom: 12px;
+            background-color: #f1eaff;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(201, 171, 218, 0.1);
         }
         .remove-btn {
-            background-color: #e74c3c;
+            background-color: #f7a5a5;
             color: white;
             border: none;
-            padding: 5px 8px;
-            border-radius: 3px;
+            padding: 5px 10px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
+            transition: all 0.2s ease;
+            margin-left: 8px;
+        }
+        .remove-btn:hover {
+            background-color: #e97777;
         }
         #addPreviousBtn {
-            background-color: #2ecc71;
+            background-color: #95cfa9;
             margin-bottom: 20px;
+        }
+        #addPreviousBtn:hover {
+            background-color: #7ab98f;
         }
         .tip {
             font-style: italic;
-            color: #7f8c8d;
+            color: #a097bc;
             font-size: 0.9em;
-            margin-top: 5px;
+            margin-top: 6px;
         }
         .alert {
-            color: #e74c3c;
+            color: #e97777;
             font-weight: bold;
             font-style: italic;
-            margin-top: 5px;
+            margin-top: 6px;
+            background-color: #fff2f2;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #f7a5a5;
+        }
+        input[type="radio"] {
+            width: auto;
+            margin-right: 5px;
+        }
+        label[for="hasVaccine"], label[for="noVaccine"] {
+            display: inline;
+            margin-right: 15px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📅 Lịch tiêm</h1>
+        <h1>🌸 Lịch tiêm chủng cho bé 🌸</h1>
         
         <div class="form-group">
-            <label for="birthdate">Ngày sinh của trẻ:</label>
+            <label for="birthdate">Ngày sinh của bé:</label>
             <input type="date" id="birthdate" required>
             <p class="tip">Nhập chính xác ngày sinh để hệ thống tính toán lịch tiêm phù hợp</p>
         </div>
@@ -170,26 +218,26 @@
         </div>
         
         <div id="previousVaccines">
-            <button type="button" id="addPreviousBtn">+ Thêm mũi tiêm đã thực hiện</button>
+            <button type="button" id="addPreviousBtn">✨ Thêm mũi tiêm đã thực hiện</button>
             
             <div id="previousVaccinesList"></div>
         </div>
         
         <div class="form-group">
             <label for="parentName">Họ tên phụ huynh:</label>
-            <input type="text" id="parentName">
+            <input type="text" id="parentName" placeholder="Nhập họ tên phụ huynh">
         </div>
         
         <div class="form-group">
             <label for="contactInfo">Thông tin liên hệ (Email hoặc SĐT):</label>
-            <input type="text" id="contactInfo">
+            <input type="text" id="contactInfo" placeholder="Nhập email hoặc số điện thoại">
             <p class="tip">Hệ thống sẽ gửi nhắc nhở khi đến lịch tiêm</p>
         </div>
         
-        <button type="button" id="calculateBtn">Xem lịch tiêm</button>
+        <button type="button" id="calculateBtn">🔍 Xem lịch tiêm</button>
         
         <div id="results">
-            <h2>Lịch tiêm chủng cho bé</h2>
+            <h2>🗓️ Lịch tiêm chủng cho bé</h2>
             <p id="childInfo"></p>
             
             <table id="scheduleTable">
@@ -204,7 +252,7 @@
                 <tbody id="scheduleBody"></tbody>
             </table>
             
-            <div style="margin-top: 20px; font-size: 0.9em;">
+            <div style="margin-top: 20px; font-size: 0.9em; background-color: #f1eaff; padding: 15px; border-radius: 8px;">
                 <p><strong>Chú ý:</strong> Lịch tiêm này được tạo dựa trên lịch tiêm chủng mở rộng theo Thông tư 10/TT-BYT ngày 13/6/2024 của Bộ Y tế. Vui lòng tham khảo ý kiến bác sĩ để có lịch tiêm phù hợp nhất cho trẻ.</p>
                 <p>Cập nhật lần cuối: 04/2025</p>
             </div>
@@ -229,7 +277,7 @@
             { age: 9, name: "Sởi", disease: "Sởi", dose: "Mũi 1" },
             { age: 12, name: "Viêm não Nhật Bản", disease: "Viêm não Nhật Bản", dose: "Mũi 1" },
             { daysAfterPrevious: 7, prevVaccine: "Viêm não Nhật Bản", prevDose: "Mũi 1", name: "Viêm não Nhật Bản", disease: "Viêm não Nhật Bản", dose: "Mũi 2", isRelativeTiming: true, displayAge: "12 tháng" },
-            { age: 18, name: "SII", disease: "Bạch hầu, Ho gà, Uốn ván, Viêm gan B, Hib", dose: "Mũi 4" },
+            { age: 18, name: "DPT", disease: "Bạch hầu, Ho gà, Uốn ván", dose: "Mũi 4" }, // Đã sửa từ SII thành DPT
             { age: 18, name: "Sởi-Rubella", disease: "Sởi, Rubella", dose: "Mũi 1" },
             { age: 24, name: "Viêm não Nhật Bản", disease: "Viêm não Nhật Bản", dose: "Mũi 3" },
             { age: 84, name: "Td", disease: "Uốn ván - Bạch hầu", dose: "Nhắc lại lần 1", note: "7 tuổi" }
@@ -393,7 +441,7 @@
                                (today.getMonth() - birthdate.getMonth());
             
             // Hiển thị thông tin trẻ
-            childInfoP.textContent = `Trẻ sinh ngày ${birthdate.toLocaleDateString('vi-VN')} - Hiện ${ageInMonths} tháng tuổi`;
+            childInfoP.textContent = `Bé sinh ngày ${birthdate.toLocaleDateString('vi-VN')} - Hiện ${ageInMonths} tháng tuổi`;
             
             // Xóa các hàng cũ trong bảng
             scheduleBody.innerHTML = '';
@@ -401,94 +449,131 @@
             // Tạo lịch tiêm chủng với xử lý cho vaccine phụ thuộc
             const processedVaccines = calculateVaccineDates(vaccineSchedule, birthdate, previousVaccines);
             
-            // Hiển thị lịch tiêm
+            // Tạo đối tượng để theo dõi các độ tuổi đã hiển thị
+            const ageDisplayed = {};
+            
+            // Gộp các vaccine cùng độ tuổi
+            const vaccinesByAge = {};
             processedVaccines.forEach(vaccine => {
-                const row = document.createElement('tr');
-                
-                // Cột tuổi/thời gian
-                const ageCell = document.createElement('td');
+                let ageKey = '';
                 if (vaccine.displayAge) {
-                    ageCell.textContent = vaccine.displayAge;
+                    ageKey = vaccine.displayAge;
                 } else if (vaccine.age === 0) {
-                    ageCell.textContent = 'Sơ sinh';
+                    ageKey = 'Sơ sinh';
                 } else if (vaccine.age === 24) {
-                    ageCell.textContent = '24 tháng';
+                    ageKey = '24 tháng';
                 } else if (vaccine.age === 12) {
-                    ageCell.textContent = '12 tháng';
+                    ageKey = '12 tháng';
                 } else if (vaccine.age >= 12 && vaccine.age % 12 === 0) {
                     const years = vaccine.age / 12;
-                    ageCell.textContent = `${years} tuổi`;
+                    ageKey = `${years} tuổi`;
                 } else {
-                    ageCell.textContent = `${vaccine.age} tháng`;
-                }
-                row.appendChild(ageCell);
-                
-                // Cột vaccine
-                const vaccineCell = document.createElement('td');
-                let vaccineInfo = `<strong>${vaccine.name}</strong><br><span class="vaccine-info">${vaccine.disease} - ${vaccine.dose}</span>`;
-                
-                // Thêm chú thích nếu có
-                if (vaccine.note) {
-                    vaccineInfo += `<br><span class="vaccine-info">(${vaccine.note})</span>`;
+                    ageKey = `${vaccine.age} tháng`;
                 }
                 
-                vaccineCell.innerHTML = vaccineInfo;
-                row.appendChild(vaccineCell);
-                
-                // Cột ngày tiêm
-                const dateCell = document.createElement('td');
-                dateCell.textContent = vaccine.calculatedDate.toLocaleDateString('vi-VN');
-                row.appendChild(dateCell);
-                
-                // Kiểm tra trạng thái
-                const statusCell = document.createElement('td');
-                
-                // Kiểm tra xem vaccine này đã được tiêm chưa
-                const matchingVaccine = previousVaccines.find(pv => 
-                    pv.name === vaccine.name && 
-                    pv.dose === vaccine.dose
-                );
-                
-                // Kiểm tra giới hạn tuổi tiêm cho Viêm gan B sơ sinh
-                let isOutOfWindow = false;
-                if (vaccine.name === "Viêm gan B sơ sinh" && vaccine.maxAgeDays) {
-                    const today = new Date();
-                    const ageInDays = Math.floor((today - birthdate) / (1000 * 60 * 60 * 24));
-                    if (ageInDays > vaccine.maxAgeDays) {
-                        isOutOfWindow = true;
+                if (!vaccinesByAge[ageKey]) {
+                    vaccinesByAge[ageKey] = [];
+                }
+                vaccinesByAge[ageKey].push(vaccine);
+            });
+            
+            // Hiển thị lịch tiêm theo nhóm độ tuổi
+            Object.keys(vaccinesByAge).sort((a, b) => {
+                // Sắp xếp theo thứ tự độ tuổi
+                const getAgeInMonths = (ageString) => {
+                    if (ageString === 'Sơ sinh') return 0;
+                    if (ageString.includes('tuổi')) {
+                        return parseInt(ageString) * 12;
                     }
-                }
+                    return parseInt(ageString);
+                };
+                return getAgeInMonths(a) - getAgeInMonths(b);
+            }).forEach(ageKey => {
+                const vaccinesForAge = vaccinesByAge[ageKey];
+                let firstRow = true;
                 
-                if (matchingVaccine) {
-                    statusCell.textContent = 'Đã tiêm';
-                    statusCell.className = 'status-complete';
-                } else if (isOutOfWindow) {
-                    statusCell.textContent = 'Đã quá thời gian tiêm';
-                    statusCell.className = 'status-due';
-                    row.appendChild(statusCell);
+                vaccinesForAge.forEach(vaccine => {
+                    const row = document.createElement('tr');
                     
-                    // Thêm một hàng ghi chú
-                    const noteRow = document.createElement('tr');
-                    const noteCell = document.createElement('td');
-                    noteCell.colSpan = 4;
-                    noteCell.className = 'alert';
-                    noteCell.textContent = 'Lưu ý: Vaccine Viêm gan B sơ sinh chỉ tiêm trong vòng 7 ngày đầu sau sinh.';
-                    noteRow.appendChild(noteCell);
+                    // Cột tuổi/thời gian - chỉ hiển thị một lần cho mỗi nhóm tuổi
+                    const ageCell = document.createElement('td');
+                    if (firstRow) {
+                        ageCell.textContent = ageKey;
+                        // Sử dụng rowspan nếu có nhiều vaccine cùng độ tuổi
+                        ageCell.rowSpan = vaccinesForAge.length;
+                        firstRow = false;
+                    } else {
+                        ageCell.style.display = 'none'; // Ẩn các ô tuổi trùng lặp
+                    }
+                    row.appendChild(ageCell);
+                    
+                    // Cột vaccine
+                    const vaccineCell = document.createElement('td');
+                    let vaccineInfo = `<strong>${vaccine.name}</strong><br><span class="vaccine-info">${vaccine.disease} - ${vaccine.dose}</span>`;
+                    
+                    // Thêm chú thích nếu có
+                    if (vaccine.note) {
+                        vaccineInfo += `<br><span class="vaccine-info">(${vaccine.note})</span>`;
+                    }
+                    
+                    vaccineCell.innerHTML = vaccineInfo;
+                    row.appendChild(vaccineCell);
+                    
+                    // Cột ngày tiêm
+                    const dateCell = document.createElement('td');
+                    dateCell.textContent = vaccine.calculatedDate.toLocaleDateString('vi-VN');
+                    row.appendChild(dateCell);
+                    
+                    // Kiểm tra trạng thái
+                    const statusCell = document.createElement('td');
+                    
+                    // Kiểm tra xem vaccine này đã được tiêm chưa
+                    const matchingVaccine = previousVaccines.find(pv => 
+                        pv.name === vaccine.name && 
+                        pv.dose === vaccine.dose
+                    );
+                    
+                    // Kiểm tra giới hạn tuổi tiêm cho Viêm gan B sơ sinh
+                    let isOutOfWindow = false;
+                    if (vaccine.name === "Viêm gan B sơ sinh" && vaccine.maxAgeDays) {
+                        const today = new Date();
+                        const ageInDays = Math.floor((today - birthdate) / (1000 * 60 * 60 * 24));
+                        if (ageInDays > vaccine.maxAgeDays) {
+                            isOutOfWindow = true;
+                        }
+                    }
+                    
+                    if (matchingVaccine) {
+                        statusCell.textContent = 'Đã tiêm';
+                        statusCell.className = 'status-complete';
+                    } else if (isOutOfWindow) {
+                        statusCell.textContent = 'Đã quá thời gian tiêm';
+                        statusCell.className = 'status-due';
+                        row.appendChild(statusCell);
+                        
+                        // Thêm một hàng ghi chú
+                        const noteRow = document.createElement('tr');
+                        const noteCell = document.createElement('td');
+                        noteCell.colSpan = 4;
+                        noteCell.className = 'alert';
+                        noteCell.textContent = 'Lưu ý: Vaccine Viêm gan B sơ sinh chỉ tiêm trong vòng 7 ngày đầu sau sinh.';
+                        noteRow.appendChild(noteCell);
+                        scheduleBody.appendChild(row);
+                        scheduleBody.appendChild(noteRow);
+                        return; // Bỏ qua việc thêm hàng thông thường
+                    } else if (vaccine.calculatedDate <= today) {
+                        statusCell.textContent = 'Đến hạn tiêm';
+                        statusCell.className = 'status-due';
+                    } else {
+                        // Tính số ngày còn lại
+                        const daysLeft = Math.ceil((vaccine.calculatedDate - today) / (1000 * 60 * 60 * 24));
+                        statusCell.textContent = `Còn ${daysLeft} ngày`;
+                        statusCell.className = 'status-coming';
+                    }
+                    
+                    row.appendChild(statusCell);
                     scheduleBody.appendChild(row);
-                    scheduleBody.appendChild(noteRow);
-                    return; // Bỏ qua việc thêm hàng thông thường
-                } else if (vaccine.calculatedDate <= today) {
-                    statusCell.textContent = 'Đến hạn tiêm';
-                    statusCell.className = 'status-due';
-                } else {
-                    // Tính số ngày còn lại
-                    const daysLeft = Math.ceil((vaccine.calculatedDate - today) / (1000 * 60 * 60 * 24));
-                    statusCell.textContent = `Còn ${daysLeft} ngày`;
-                    statusCell.className = 'status-coming';
-                }
-                
-                row.appendChild(statusCell);
-                scheduleBody.appendChild(row);
+                });
             });
             
             // Hiển thị kết quả
@@ -537,8 +622,7 @@
                     // Tìm vaccine phụ thuộc
                     const dependentKey = `${vaccine.prevVaccine}-${vaccine.prevDose}`;
                     const dependentVaccine = vaccineDoseMap.get(dependentKey);
-                    
-                    if (dependentVaccine) {
+                if (dependentVaccine) {
                         // Tính ngày tiêm dựa trên ngày tiêm của vaccine phụ thuộc
                         const dependentDate = dependentVaccine.calculatedDate;
                         const calculatedDate = new Date(dependentDate);
