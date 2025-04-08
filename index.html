@@ -1,28 +1,102 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lịch tiêm</title>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background-color: #fef6fb;
+      color: #34495e;
+      margin: 0;
+      padding: 20px;
+    }
+
+    #vaccine-schedule {
+      max-width: 700px;
+      margin: 30px auto;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+      padding: 30px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #e67e9f;
+    }
+
+    input[type="date"] {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button#view {
+      background-color: #e67e9f;
+      color: white;
+    }
+
+    button#downloadBtn {
+      background-color: #82ccdd;
+      color: white;
+      display: none;
+      margin-left: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f8c8dc;
+    }
+
+    tr:nth-child(even) {
+      background-color: #fdf1f5;
+    }
+  </style>
 </head>
-<body style="background: #fef6f9; font-family: 'Quicksand', sans-serif; padding: 30px;">
+<body>
+  <div id="vaccine-schedule">
+    <h2>📅 Lịch tiêm</h2>
 
-  <div id="vaccine-schedule" style="max-width: 600px; margin: auto; background: #ffffffcc; padding: 25px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-    <h2 style="text-align: center; color: #d1709c;">📅 Lịch tiêm</h2>
+    <label for="dob">Ngày sinh của trẻ:</label>
+    <input type="date" id="dob" />
 
-    <label for="dob" style="display: block; margin-top: 15px; font-weight: 600;">Ngày sinh của trẻ:</label>
-    <input type="date" id="dob" style="padding: 10px; width: 100%; margin-top: 5px; border: 1px solid #ccc; border-radius: 8px;" />
+    <div>
+      <button id="view" onclick="showSchedule()">🔍 Xem lịch tiêm</button>
+      <button id="downloadBtn" onclick="downloadPDF()">⬇️ Tải PDF</button>
+    </div>
 
-    <button onclick="showSchedule()" style="margin-top: 20px; padding: 10px 20px; background-color: #f8a5c2; color: white; border: none; border-radius: 8px; cursor: pointer;">🔍 Xem lịch tiêm</button>
-
-    <div id="schedule-output" style="margin-top: 25px;"></div>
-
-    <button id="downloadBtn" onclick="downloadPDF()" style="display: none; margin-top: 20px; padding: 10px 20px; background-color: #78e08f; color: white; border: none; border-radius: 8px; cursor: pointer;">⬇️ Tải PDF</button>
+    <div id="schedule-output"></div>
   </div>
 
+  <!-- html2pdf -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <script>
     function showSchedule() {
       const dobInput = document.getElementById("dob").value;
@@ -41,16 +115,38 @@
         { name: "5 trong 1 mũi 3", days: 120 },
         { name: "Viêm gan B mũi 3", days: 150 },
         { name: "Sởi - Rubella", days: 270 },
-        { name: "Sởi mũi 2", days: 365 },
+        { name: "Sởi mũi 2", days: 365 }
       ];
 
-      let output = `<div id="schedule-content"><h3 style="color:#e15f97;">📋 Lịch tiêm dự kiến:</h3><ul style="padding-left: 20px;">`;
+      let output = `
+        <div id="schedule-content">
+          <h3>📋 Lịch tiêm dự kiến:</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Vaccine</th>
+                <th>Ngày dự kiến</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+
       vaccines.forEach(vaccine => {
         const date = new Date(dob);
         date.setDate(date.getDate() + vaccine.days);
-        output += `<li style="margin-bottom: 6px;"><strong>${vaccine.name}</strong>: ${date.toLocaleDateString()}</li>`;
+        output += `
+          <tr>
+            <td>${vaccine.name}</td>
+            <td>${date.toLocaleDateString()}</td>
+          </tr>
+        `;
       });
-      output += "</ul></div>";
+
+      output += `
+            </tbody>
+          </table>
+        </div>
+      `;
 
       document.getElementById("schedule-output").innerHTML = output;
       document.getElementById("downloadBtn").style.display = "inline-block";
