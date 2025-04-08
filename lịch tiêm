@@ -1,0 +1,72 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lịch tiêm</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet"/>
+</head>
+<body style="background: #fef6f9; font-family: 'Quicksand', sans-serif; padding: 30px;">
+
+  <div id="vaccine-schedule" style="max-width: 600px; margin: auto; background: #ffffffcc; padding: 25px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <h2 style="text-align: center; color: #d1709c;">📅 Lịch tiêm</h2>
+
+    <label for="dob" style="display: block; margin-top: 15px; font-weight: 600;">Ngày sinh của trẻ:</label>
+    <input type="date" id="dob" style="padding: 10px; width: 100%; margin-top: 5px; border: 1px solid #ccc; border-radius: 8px;" />
+
+    <button onclick="showSchedule()" style="margin-top: 20px; padding: 10px 20px; background-color: #f8a5c2; color: white; border: none; border-radius: 8px; cursor: pointer;">🔍 Xem lịch tiêm</button>
+
+    <div id="schedule-output" style="margin-top: 25px;"></div>
+
+    <button id="downloadBtn" onclick="downloadPDF()" style="display: none; margin-top: 20px; padding: 10px 20px; background-color: #78e08f; color: white; border: none; border-radius: 8px; cursor: pointer;">⬇️ Tải PDF</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    function showSchedule() {
+      const dobInput = document.getElementById("dob").value;
+      if (!dobInput) {
+        alert("Vui lòng nhập ngày sinh của trẻ.");
+        return;
+      }
+
+      const dob = new Date(dobInput);
+      const vaccines = [
+        { name: "Viêm gan B mũi 1", days: 0 },
+        { name: "BCG (lao)", days: 0 },
+        { name: "Viêm gan B mũi 2", days: 30 },
+        { name: "5 trong 1 mũi 1", days: 60 },
+        { name: "5 trong 1 mũi 2", days: 90 },
+        { name: "5 trong 1 mũi 3", days: 120 },
+        { name: "Viêm gan B mũi 3", days: 150 },
+        { name: "Sởi - Rubella", days: 270 },
+        { name: "Sởi mũi 2", days: 365 },
+      ];
+
+      let output = `<div id="schedule-content"><h3 style="color:#e15f97;">📋 Lịch tiêm dự kiến:</h3><ul style="padding-left: 20px;">`;
+      vaccines.forEach(vaccine => {
+        const date = new Date(dob);
+        date.setDate(date.getDate() + vaccine.days);
+        output += `<li style="margin-bottom: 6px;"><strong>${vaccine.name}</strong>: ${date.toLocaleDateString()}</li>`;
+      });
+      output += "</ul></div>";
+
+      document.getElementById("schedule-output").innerHTML = output;
+      document.getElementById("downloadBtn").style.display = "inline-block";
+    }
+
+    function downloadPDF() {
+      const element = document.getElementById("schedule-content");
+      const opt = {
+        margin: 0.5,
+        filename: 'lich-tiem-chung.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+    }
+  </script>
+</body>
+</html>
