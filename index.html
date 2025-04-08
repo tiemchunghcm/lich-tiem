@@ -2,64 +2,128 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lịch tiêm</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #fdf6f0;
+      background-color: #fef6f9;
+      color: #2c3e50;
       padding: 20px;
-      color: #333;
     }
-    h1 {
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fffafc;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h2 {
       text-align: center;
-      color: #4a4e69;
+      color: #d65a9e;
     }
-    .form-section {
-      max-width: 700px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    }
-    label {
+    label, input, button {
       display: block;
-      margin-top: 15px;
-      font-weight: 600;
-      color: #555;
-    }
-    input[type="date"], select {
-      padding: 10px;
       width: 100%;
-      margin-top: 5px;
+      margin-top: 10px;
+    }
+    input[type="date"] {
+      padding: 8px;
+      border-radius: 5px;
       border: 1px solid #ccc;
-      border-radius: 8px;
-      background: #fffefc;
     }
     button {
-      margin-top: 20px;
-      background-color: #c9ada7;
+      background-color: #f39ac7;
       color: white;
+      padding: 10px;
       border: none;
-      padding: 12px 20px;
-      border-radius: 8px;
+      border-radius: 5px;
       cursor: pointer;
-      font-weight: 600;
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background-color: #ac9891;
+      margin-top: 15px;
     }
     table {
       width: 100%;
-      margin-top: 30px;
+      margin-top: 20px;
       border-collapse: collapse;
-      background-color: #fff;
-      border-radius: 10px;
-      overflow: hidden;
     }
     th, td {
-      padding: 12px;
+      border: 1px solid #eee;
+      padding: 10px;
       text-align: left;
-      border-bottom: 1px solid #eee
+    }
+    th {
+      background-color: #ffd9ec;
+    }
+    #downloadBtn {
+      display: none;
+      background-color: #91eac7;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📅 Lịch tiêm</h2>
+    <label for="dob">Ngày sinh của trẻ:</label>
+    <input type="date" id="dob">
+
+    <label style="margin-top:10px;">
+      <input type="checkbox" id="hasPrevVaccines"> Đã tiêm các mũi vaccine trước đó?
+    </label>
+
+    <button onclick="generateSchedule()">🔍 Xem lịch tiêm</button>
+    <div id="schedule-output"></div>
+    <button id="downloadBtn" onclick="downloadPDF()">⬇️ Tải PDF</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    const vaccines = [
+      { age: 'Sơ sinh', name: 'Viêm gan B mũi 1', days: 0 },
+      { age: 'Sơ sinh', name: 'BCG (lao)', days: 0 },
+      { age: '1 tháng', name: 'Viêm gan B mũi 2', days: 30 },
+      { age: '2 tháng', name: '5 trong 1 mũi 1', days: 60 },
+      { age: '3 tháng', name: '5 trong 1 mũi 2', days: 90 },
+      { age: '4 tháng', name: '5 trong 1 mũi 3', days: 120 },
+      { age: '5 tháng', name: 'Viêm gan B mũi 3', days: 150 },
+      { age: '9 tháng', name: 'Sởi - Rubella', days: 270 },
+      { age: '12 tháng', name: 'Sởi mũi 2', days: 365 },
+    ];
+
+    function generateSchedule() {
+      const dobStr = document.getElementById('dob').value;
+      const hasPrev = document.getElementById('hasPrevVaccines').checked;
+      if (!dobStr) {
+        alert('Vui lòng nhập ngày sinh của trẻ.');
+        return;
+      }
+      const dob = new Date(dobStr);
+
+      let html = '<div id="schedule-content"><table><thead><tr><th>Độ tuổi</th><th>Vaccine</th><th>Ngày tiêm</th><th>Trạng thái</th></tr></thead><tbody>';
+      vaccines.forEach(vaccine => {
+        const date = new Date(dob);
+        date.setDate(date.getDate() + vaccine.days);
+        const status = hasPrev && date < new Date() ? '✅ Đã tiêm' : '🕐 Chưa tiêm';
+        html += `<tr><td>${vaccine.age}</td><td>${vaccine.name}</td><td>${date.toLocaleDateString()}</td><td>${status}</td></tr>`;
+      });
+      html += '</tbody></table></div>';
+
+      document.getElementById('schedule-output').innerHTML = html;
+      document.getElementById('downloadBtn').style.display = 'block';
+    }
+
+    function downloadPDF() {
+      const element = document.getElementById("schedule-content");
+      const opt = {
+        margin: 0.5,
+        filename: 'lich-tiem-du-kien.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+    }
+  </script>
+</body>
+</html>
