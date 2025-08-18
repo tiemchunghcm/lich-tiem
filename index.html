@@ -27,7 +27,7 @@
             color: #9c7aa5;
             text-align: center;
             margin-bottom: 30px;
-            font-weight: 500;
+            font-weight: 700; /* In đậm tiêu đề */
         }
         h2 {
             color: #9c7aa5;
@@ -633,7 +633,7 @@
             { age: 18, name: "OPV", disease: "Bại liệt", dose: "Mũi nhắc 1", required: true },
             { age: 18, name: "Sởi-Rubella", disease: "Sởi và Rubella", dose: "Mũi 1", required: true },
             { age: 24, name: "Viêm não Nhật Bản", disease: "Viêm não Nhật Bản", dose: "Mũi 3", required: true },
-            { age: 48, name: "DT", disease: "Bạch hầu, Uốn ván", dose: "Mũi nhắc 2", required: true }
+            { age: 84, name: "Td", disease: "Bạch hầu, Uốn ván", dose: "Mũi nhắc 2", required: true } // Thay age: 48 thành 84 (7 năm = 84 tháng), name: "DT" thành "Td"
         ];
 
         // Dữ liệu vaccine tự nguyện
@@ -769,7 +769,7 @@
                         <option value="Sởi-Rubella">Sởi-Rubella</option>
                         <option value="Viêm não Nhật Bản">Viêm não Nhật Bản</option>
                         <option value="DPT">DPT (Bạch hầu-Ho gà-Uốn ván)</option>
-                        <option value="DT">DT (Bạch hầu-Uốn ván)</option>
+                        <option value="Td">Td (Bạch hầu-Uốn ván)</option> <!-- Sửa DT thành Td -->
                         <option value="Phế cầu">Phế cầu</option>
                         <option value="Thủy đậu">Thủy đậu</option>
                         <option value="Cúm">Cúm</option>
@@ -955,15 +955,14 @@
                             const ageMatch = vaccine.displayAge.match(/(\d+)[-\s]?(\d+)?/);
                             if (ageMatch) {
                                 const months = parseInt(ageMatch[1]);
-                                vaccineDate.setMonth(vaccineDate.getMonth() + months);
+                                vaccineDate = addMonths(birthDate, months); // Sử dụng hàm addMonths để tính chính xác
                             }
                         }
                     }
                 } else if (vaccine.age !== undefined) {
                     // Tính ngày tiêm dựa trên độ tuổi (tháng)
-                    displayAge = vaccine.age === 0 ? 'Sơ sinh' : `${vaccine.age} tháng`;
-                    vaccineDate = new Date(birthDate);
-                    vaccineDate.setMonth(vaccineDate.getMonth() + vaccine.age);
+                    displayAge = vaccine.age === 0 ? 'Sơ sinh' : vaccine.age === 84 ? '7 tuổi' : `${vaccine.age} tháng`; // Sửa displayAge cho age 84 thành '7 tuổi'
+                    vaccineDate = addMonths(birthDate, vaccine.age); // Sử dụng hàm addMonths để tính chính xác
                 } else {
                     // Xử lý trường hợp đặc biệt
                     displayAge = 'Khi cần';
@@ -1083,6 +1082,17 @@
             } else {
                 return '';
             }
+        }
+
+        // Hàm thêm tháng chính xác hơn để tránh lỗi ngày tháng
+        function addMonths(date, months) {
+            const newDate = new Date(date);
+            const d = newDate.getDate();
+            newDate.setMonth(newDate.getMonth() + months);
+            if (newDate.getDate() !== d) {
+                newDate.setDate(0); // Chuyển về ngày cuối tháng nếu ngày không tồn tại
+            }
+            return newDate;
         }
     </script>
 </body>
