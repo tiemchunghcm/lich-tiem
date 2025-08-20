@@ -1,1110 +1,1162 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch tiêm chủng</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #ffffff;
-            color: #5a5a7a;
-            line-height: 1.6;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            background: #fff8fb;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(210, 180, 205, 0.3);
-            border: 1px solid #f2dae7;
-        }
-        h1 {
-            color: #9c7aa5;
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: 700;
-        }
-        h2 {
-            color: #9c7aa5;
-            margin-top: 25px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #7c668d;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #e8d1e4;
-            border-radius: 8px;
-            box-sizing: border-box;
-            background-color: #fefafd;
-            color: #6d6a8c;
-        }
-        input:focus, select:focus {
-            outline: none;
-            border-color: #c9abda;
-            box-shadow: 0 0 0 2px rgba(201, 171, 218, 0.2);
-        }
-        button {
-            background-color: #a588c0;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-        }
-        button:hover {
-            background-color: #8e6cb2;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(174, 136, 192, 0.3);
-        }
-        #results {
-            margin-top: 35px;
-            display: none;
-        }
-        #targetResults {
-            margin-top: 35px;
-            display: none;
-        }
-        .schedule-item {
-            background-color: #fcf9ff;
-            padding: 16px;
-            margin-bottom: 12px;
-            border-left: 4px solid #bda0cf;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(201, 171, 218, 0.15);
-        }
-        .due {
-            border-left-color: #f7a5a5;
-        }
-        .coming {
-            border-left-color: #ffd1a4;
-        }
-        .complete {
-            border-left-color: #aee0bc;
-        }
-        .vaccine-date {
-            font-weight: bold;
-        }
-        .vaccine-info {
-            color: #8e8aa6;
-            font-size: 0.9em;
-        }
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin-top: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(201, 171, 218, 0.15);
-        }
-        th, td {
-            padding: 14px;
-            text-align: left;
-            border-bottom: 1px solid #f0e5f5;
-        }
-        th {
-            background-color: #e9ddff;
-            color: #6d6a8c;
-            font-weight: 500;
-        }
-        tr:last-child td {
-            border-bottom: none;
-        }
-        tr:nth-child(even) {
-            background-color: #fdf6ff;
-        }
-        .status-due {
-            color: #ed7c7c;
-            font-weight: bold;
-        }
-        .status-coming {
-            color: #f5a742;
-        }
-        .status-complete {
-            color: #67c17d;
-        }
-        .status-suitable {
-            color: #67c17d;
-            font-weight: bold;
-        }
-        #previousVaccines {
-            margin-top: 20px;
-            display: none;
-            background-color: #f8f2ff;
-            padding: 15px;
-            border-radius: 10px;
-        }
-        .previous-vaccine {
-            margin-bottom: 12px;
-            background-color: #f1eaff;
-            padding: 12px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(201, 171, 218, 0.1);
-        }
-        .remove-btn {
-            background-color: #f7a5a5;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s ease;
-            margin-left: 8px;
-        }
-        .remove-btn:hover {
-            background-color: #e97777;
-        }
-        #addPreviousBtn {
-            background-color: #95cfa9;
-            margin-bottom: 20px;
-        }
-        #addPreviousBtn:hover {
-            background-color: #7ab98f;
-        }
-        .tip {
-            font-style: italic;
-            color: #a097bc;
-            font-size: 0.9em;
-            margin-top: 6px;
-        }
-        .alert {
-            color: #e97777;
-            font-weight: bold;
-            font-style: italic;
-            margin-top: 6px;
-            background-color: #fff2f2;
-            padding: 10px;
-            border-radius: 8px;
-            border-left: 4px solid #f7a5a5;
-        }
-        input[type="radio"] {
-            width: auto;
-            margin-right: 5px;
-        }
-        input[type="checkbox"] {
-            width: auto;
-            margin-right: 8px;
-        }
-        label[for="hasVaccine"], label[for="noVaccine"] {
-            display: inline;
-            margin-right: 15px;
-        }
-        .vaccine-category {
-            margin-top: 20px;
-            border-top: 1px dashed #e0d0eb;
-            padding-top: 15px;
-        }
-        .vaccine-badge {
-            display: inline-block;
-            padding: 3px 8px;
-            font-size: 0.75em;
-            border-radius: 4px;
-            margin-left: 8px;
-            font-weight: 600;
-        }
-        .badge-required {
-            background-color: #d8ebff;
-            color: #4a89dc;
-        }
-        .badge-optional {
-            background-color: #fff0d8;
-            color: #f5a742;
-        }
-        .vaccine-options {
-            background-color: #f8f4ff;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-        }
-        .main-tabs {
-            display: flex;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #e0d0eb;
-            background-color: #f8f4ff;
-            border-radius: 10px 10px 0 0;
-        }
-        .main-tab {
-            padding: 15px 25px;
-            cursor: pointer;
-            border-bottom: 4px solid transparent;
-            transition: all 0.3s ease;
-            flex: 1;
-            text-align: center;
-            font-weight: 500;
-        }
-        .main-tab:hover {
-            color: #9c7aa5;
-            background-color: #f1eaff;
-        }
-        .main-tab.active {
-            color: #9c7aa5;
-            border-bottom-color: #9c7aa5;
-            background-color: #ffffff;
-            font-weight: 600;
-        }
-        .main-tab-content {
-            display: none;
-        }
-        .main-tab-content.active {
-            display: block;
-        }
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e0d0eb;
-        }
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-        }
-        .tab:hover {
-            color: #9c7aa5;
-        }
-        .tab.active {
-            color: #9c7aa5;
-            border-bottom-color: #9c7aa5;
-            font-weight: 500;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .checkbox-item {
-            flex-basis: 48%;
-            background-color: #f1eaff;
-            padding: 10px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-        }
-        .checkbox-item:hover {
-            background-color: #e6ddff;
-        }
-        .checkbox-item label {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            margin-bottom: 0;
-        }
-        .info-icon {
-            display: inline-block;
-            margin-left: 5px;
-            width: 16px;
-            height: 16px;
-            line-height: 16px;
-            text-align: center;
-            background-color: #c9abda;
-            color: white;
-            border-radius: 50%;
-            font-size: 12px;
-            cursor: pointer;
-        }
-        .tooltip {
-            position: relative;
-            display: inline-block;
-        }
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 250px;
-            background-color: #7c668d;
-            color: #fff;
-            text-align: left;
-            border-radius: 6px;
-            padding: 8px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -125px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.8em;
-            font-weight: normal;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-        .age-range {
-            font-weight: bold;
-            color: #9c7aa5;
-        }
-        .suitable-row {
-            background-color: #f0fff4;
-        }
-        @media (max-width: 768px) {
-            .checkbox-item {
-                flex-basis: 100%;
-            }
-            .tooltip .tooltiptext {
-                width: 200px;
-                margin-left: -100px;
-            }
-            .main-tab {
-                padding: 12px 15px;
-                font-size: 14px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lịch tiêm chủng</title>
+<style>
+body {
+font-family: 'Segoe UI', sans-serif;
+background-color: #ffffff;
+color: #5a5a7a;
+line-height: 1.6;
+max-width: 1000px;
+margin: 0 auto;
+padding: 20px;
+}
+
+.container {
+max-width: 1000px;
+margin: auto;
+background: #fff8fb;
+padding: 30px;
+border-radius: 15px;
+box-shadow: 0 5px 15px rgba(210, 180, 205, 0.3);
+border: 1px solid #f2dae7;
+}
+
+h1 {
+color: #9c7aa5;
+text-align: center;
+margin-bottom: 30px;
+font-weight: 700;
+}
+
+h2 {
+color: #9c7aa5;
+margin-top: 25px;
+}
+
+.form-group {
+margin-bottom: 20px;
+}
+
+label {
+display: block;
+margin-bottom: 8px;
+font-weight: 500;
+color: #7c668d;
+}
+
+input, select {
+width: 100%;
+padding: 10px;
+border: 1px solid #e8d1e4;
+border-radius: 8px;
+box-sizing: border-box;
+background-color: #fefafd;
+color: #6d6a8c;
+}
+
+input:focus, select:focus {
+outline: none;
+border-color: #c9abda;
+box-shadow: 0 0 0 2px rgba(201, 171, 218, 0.2);
+}
+
+button {
+background-color: #a588c0;
+color: white;
+border: none;
+padding: 12px 20px;
+border-radius: 8px;
+cursor: pointer;
+font-size: 16px;
+margin-top: 15px;
+transition: all 0.3s ease;
+}
+
+button:hover {
+background-color: #8e6cb2;
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(174, 136, 192, 0.3);
+}
+
+#results {
+margin-top: 35px;
+display: none;
+}
+
+#targetResults {
+margin-top: 35px;
+display: none;
+}
+
+.schedule-item {
+background-color: #fcf9ff;
+padding: 16px;
+margin-bottom: 12px;
+border-left: 4px solid #bda0cf;
+border-radius: 8px;
+box-shadow: 0 2px 5px rgba(201, 171, 218, 0.15);
+}
+
+.due {
+border-left-color: #f7a5a5;
+}
+
+.coming {
+border-left-color: #ffd1a4;
+}
+
+.complete {
+border-left-color: #aee0bc;
+}
+
+.vaccine-date {
+font-weight: bold;
+}
+
+.vaccine-info {
+color: #8e8aa6;
+font-size: 0.9em;
+}
+
+table {
+width: 100%;
+border-collapse: separate;
+border-spacing: 0;
+margin-top: 20px;
+border-radius: 10px;
+overflow: hidden;
+box-shadow: 0 2px 8px rgba(201, 171, 218, 0.15);
+}
+
+th, td {
+padding: 14px;
+text-align: left;
+border-bottom: 1px solid #f0e5f5;
+}
+
+th {
+background-color: #e9ddff;
+color: #6d6a8c;
+font-weight: 500;
+}
+
+tr:last-child td {
+border-bottom: none;
+}
+
+tr:nth-child(even) {
+background-color: #fdf6ff;
+}
+
+.status-due {
+color: #ed7c7c;
+font-weight: bold;
+}
+
+.status-coming {
+color: #f5a742;
+}
+
+.status-complete {
+color: #67c17d;
+}
+
+.status-suitable {
+color: #67c17d;
+font-weight: bold;
+}
+
+#previousVaccines {
+margin-top: 20px;
+display: none;
+background-color: #f8f2ff;
+padding: 15px;
+border-radius: 10px;
+}
+
+.previous-vaccine {
+margin-bottom: 12px;
+background-color: #f1eaff;
+padding: 12px;
+border-radius: 8px;
+box-shadow: 0 2px 4px rgba(201, 171, 218, 0.1);
+}
+
+.remove-btn {
+background-color: #f7a5a5;
+color: white;
+border: none;
+padding: 5px 10px;
+border-radius: 6px;
+cursor: pointer;
+font-size: 12px;
+transition: all 0.2s ease;
+margin-left: 8px;
+}
+
+.remove-btn:hover {
+background-color: #e97777;
+}
+
+#addPreviousBtn {
+background-color: #95cfa9;
+margin-bottom: 20px;
+}
+
+#addPreviousBtn:hover {
+background-color: #7ab98f;
+}
+
+.tip {
+font-style: italic;
+color: #a097bc;
+font-size: 0.9em;
+margin-top: 6px;
+}
+
+.alert {
+color: #e97777;
+font-weight: bold;
+font-style: italic;
+margin-top: 6px;
+background-color: #fff2f2;
+padding: 10px;
+border-radius: 8px;
+border-left: 4px solid #f7a5a5;
+}
+
+input[type="radio"] {
+width: auto;
+margin-right: 5px;
+}
+
+input[type="checkbox"] {
+width: auto;
+margin-right: 8px;
+}
+
+label[for="hasVaccine"], label[for="noVaccine"] {
+display: inline;
+margin-right: 15px;
+}
+
+.vaccine-category {
+margin-top: 20px;
+border-top: 1px dashed #e0d0eb;
+padding-top: 15px;
+}
+
+.vaccine-badge {
+display: inline-block;
+padding: 3px 8px;
+font-size: 0.75em;
+border-radius: 4px;
+margin-left: 8px;
+font-weight: 600;
+}
+
+.badge-required {
+background-color: #d8ebff;
+color: #4a89dc;
+}
+
+.badge-optional {
+background-color: #fff0d8;
+color: #f5a742;
+}
+
+.vaccine-options {
+background-color: #f8f4ff;
+padding: 15px;
+border-radius: 10px;
+margin-top: 15px;
+}
+
+.main-tabs {
+display: flex;
+margin-bottom: 30px;
+border-bottom: 2px solid #e0d0eb;
+background-color: #f8f4ff;
+border-radius: 10px 10px 0 0;
+}
+
+.main-tab {
+padding: 15px 25px;
+cursor: pointer;
+border-bottom: 4px solid transparent;
+transition: all 0.3s ease;
+flex: 1;
+text-align: center;
+font-weight: 500;
+}
+
+.main-tab:hover {
+color: #9c7aa5;
+background-color: #f1eaff;
+}
+
+.main-tab.active {
+color: #9c7aa5;
+border-bottom-color: #9c7aa5;
+background-color: #ffffff;
+font-weight: 600;
+}
+
+.main-tab-content {
+display: none;
+}
+
+.main-tab-content.active {
+display: block;
+}
+
+.tabs {
+display: flex;
+margin-bottom: 20px;
+border-bottom: 1px solid #e0d0eb;
+}
+
+.tab {
+padding: 10px 20px;
+cursor: pointer;
+border-bottom: 3px solid transparent;
+transition: all 0.3s ease;
+}
+
+.tab:hover {
+color: #9c7aa5;
+}
+
+.tab.active {
+color: #9c7aa5;
+border-bottom-color: #9c7aa5;
+font-weight: 500;
+}
+
+.tab-content {
+display: none;
+}
+
+.tab-content.active {
+display: block;
+}
+
+.checkbox-group {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: 10px;
+}
+
+.checkbox-item {
+flex-basis: 48%;
+background-color: #f1eaff;
+padding: 10px;
+border-radius: 8px;
+transition: all 0.2s ease;
+}
+
+.checkbox-item:hover {
+background-color: #e6ddff;
+}
+
+.checkbox-item label {
+display: flex;
+align-items: center;
+cursor: pointer;
+margin-bottom: 0;
+}
+
+.info-icon {
+display: inline-block;
+margin-left: 5px;
+width: 16px;
+height: 16px;
+line-height: 16px;
+text-align: center;
+background-color: #c9abda;
+color: white;
+border-radius: 50%;
+font-size: 12px;
+cursor: pointer;
+}
+
+.tooltip {
+position: relative;
+display: inline-block;
+}
+
+.tooltip .tooltiptext {
+visibility: hidden;
+width: 250px;
+background-color: #7c668d;
+color: #fff;
+text-align: left;
+border-radius: 6px;
+padding: 8px;
+position: absolute;
+z-index: 1;
+bottom: 125%;
+left: 50%;
+margin-left: -125px;
+opacity: 0;
+transition: opacity 0.3s;
+font-size: 0.8em;
+font-weight: normal;
+box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.tooltip:hover .tooltiptext {
+visibility: visible;
+opacity: 1;
+}
+
+.age-range {
+font-weight: bold;
+color: #9c7aa5;
+}
+
+.suitable-row {
+background-color: #f0fff4;
+}
+
+@media (max-width: 768px) {
+.checkbox-item {
+flex-basis: 100%;
+}
+
+.tooltip .tooltiptext {
+width: 200px;
+margin-left: -100px;
+}
+
+.main-tab {
+padding: 12px 15px;
+font-size: 14px;
+}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>🌸 Hệ thống quản lý tiêm chủng 🌸</h1>
-        
-        <!-- Main Tabs -->
-        <div class="main-tabs">
-            <div class="main-tab active" data-main-tab="schedule">📅 Lịch tiêm chủng cho bé</div>
-            <div class="main-tab" data-main-tab="target">🎯 Xác định đối tượng tiêm</div>
-        </div>
-        
-        <!-- Tab 1: Lịch tiêm chủng cho bé -->
-        <div class="main-tab-content active" id="schedule-main-tab">
-            <div class="tabs">
-                <div class="tab active" data-tab="required">Tiêm chủng cơ bản</div>
-                <div class="tab" data-tab="optional">Tiêm chủng tự nguyện</div>
-                <div class="tab" data-tab="adult">Tiêm chủng người lớn</div>
-            </div>
-            
-            <div class="tab-content active" id="required-tab">
-                <div class="form-group">
-                    <label for="birthdate">Ngày sinh của bé:</label>
-                    <input type="date" id="birthdate" required>
-                    <p class="tip">Nhập chính xác ngày sinh để hệ thống tính toán lịch tiêm phù hợp</p>
-                </div>
-                
-                <div class="form-group">
-                    <label>Đã tiêm các mũi vaccine trước đó?</label>
-                    <div>
-                        <input type="radio" id="hasVaccine" name="previousVaccine" value="yes">
-                        <label for="hasVaccine" style="display: inline;">Có</label>
-                        
-                        <input type="radio" id="noVaccine" name="previousVaccine" value="no" checked style="margin-left: 20px;">
-                        <label for="noVaccine" style="display: inline;">Chưa</label>
-                    </div>
-                </div>
-                
-                <div id="previousVaccines">
-                    <button type="button" id="addPreviousBtn">✨ Thêm mũi tiêm đã thực hiện</button>
-                    
-                    <div id="previousVaccinesList"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="parentName">Họ tên phụ huynh:</label>
-                    <input type="text" id="parentName" placeholder="Nhập họ tên phụ huynh">
-                </div>
-                
-                <div class="form-group">
-                    <label for="contactInfo">Thông tin liên hệ (Email hoặc SĐT):</label>
-                    <input type="text" id="contactInfo" placeholder="Nhập email hoặc số điện thoại">
-                    <p class="tip">Hệ thống sẽ gửi nhắc nhở khi đến lịch tiêm</p>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="optional-tab">
-                <h2>Vaccine tự nguyện <span class="vaccine-badge badge-optional">Tự nguyện</span></h2>
-                <p>Chọn các vaccine bổ sung ngoài chương trình tiêm chủng mở rộng mà bạn muốn tiêm cho bé:</p>
-                
-                <div class="checkbox-group">
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="optionalVaccines" value="pneumococcal"> Phế cầu (2 - 4 tháng)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm phổi, viêm màng não mủ, viêm tai giữa do phế cầu khuẩn. Tiêm từ 2 tháng tuổi, 3 mũi cơ bản + 1 mũi nhắc.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="optionalVaccines" value="chickenpox"> Thủy đậu (12 - 15 tháng)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh thủy đậu. Tiêm từ 12 tháng tuổi, 2 mũi cách nhau 3 tháng.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="optionalVaccines" value="influenza"> Cúm (6 tháng trở lên)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh cúm mùa. Tiêm từ 6 tháng tuổi, tiêm nhắc hàng năm.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="optionalVaccines" value="mmr"> Sởi - Quai bị - Rubella (12 tháng)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Vaccine phối hợp phòng sởi, quai bị và rubella. Tiêm từ 12 tháng, 2 mũi cách nhau 3-6 tháng.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="optionalVaccines" value="hpv"> HPV (9 - 14 tuổi)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng ung thư cổ tử cung và các bệnh do HPV. Tiêm cho trẻ 9-14 tuổi, 3 mũi theo lịch 0-2-6 tháng.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="optionalVaccines" value="hepatitisA"> Viêm gan A (12 tháng trở lên)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm gan A. Tiêm từ 12 tháng tuổi, 2 mũi cách nhau 6-12 tháng.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="optionalVaccines" value="meningococcal"> Não mô cầu (9 tháng trở lên)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm màng não do não mô cầu. Tiêm từ 9 tháng tuổi, lịch tiêm phụ thuộc vào loại vaccine.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="optionalVaccines" value="typhoid"> Thương hàn (2 tuổi trở lên)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh thương hàn. Tiêm từ 2 tuổi trở lên, tiêm nhắc sau 3 năm.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="optionalVaccines" value="rabies"> Dại (Sau phơi nhiễm)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh dại. Tiêm khi có nguy cơ phơi nhiễm (bị động vật cắn).</span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="adult-tab">
-                <h2>Vaccine cho người lớn <span class="vaccine-badge badge-optional">Khuyến nghị</span></h2>
-                <p>Chọn các vaccine khuyến nghị cho người lớn:</p>
-                
-                <div class="form-group">
-                    <label for="adultBirthdate">Ngày sinh:</label>
-                    <input type="date" id="adultBirthdate" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="gender">Giới tính:</label>
-                    <select id="gender">
-                        <option value="male">Nam</option>
-                        <option value="female">Nữ</option>
-                    </select>
-                </div>
-                
-                <div class="checkbox-group">
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="influenza"> Cúm
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh cúm mùa. Tiêm nhắc hàng năm cho tất cả người lớn.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="tdap"> Uốn ván-Bạch hầu-Ho gà (Tdap)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh uốn ván, bạch hầu và ho gà. Tiêm nhắc mỗi 10 năm.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="hpv"> HPV
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng ung thư do HPV. Tiêm cho người lớn đến 26 tuổi nếu chưa tiêm đủ liều.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="mmr"> Sởi-Quai bị-Rubella (MMR)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh sởi, quai bị và rubella. Tiêm cho người lớn sinh sau năm 1957 nếu chưa tiêm đủ liều.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="hepatitisA"> Viêm gan A
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm gan A. Tiêm 2 liều cách nhau 6-12 tháng.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="hepatitisB"> Viêm gan B
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm gan B. Tiêm 3 liều theo lịch 0-1-6 tháng.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="pneumococcal"> Phế cầu
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh do phế cầu khuẩn. Khuyến nghị cho người từ 65 tuổi trở lên hoặc có bệnh nền.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="shingles"> Zona (Shingles)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh zona (herpes zoster). Khuyến nghị cho người từ 50 tuổi trở lên.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="covid19"> COVID-19
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh COVID-19. Tiêm nhắc theo khuyến cáo mới nhất.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="meningococcal"> Não mô cầu
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm màng não do não mô cầu. Khuyến nghị cho một số đối tượng nguy cơ cao.</span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            
-            <button type="button" id="calculateBtn">🔍 Xem lịch tiêm</button>
-            
-            <div id="results">
-                <h2>🗓️ Lịch tiêm chủng</h2>
-                <p id="childInfo"></p>
-                
-                <table id="scheduleTable">
-                    <thead>
-                        <tr>
-                            <th>Độ tuổi</th>
-                            <th>Vaccine</th>
-                            <th>Ngày tiêm</th>
-                            <th>Trạng thái</th>
-                        </tr>
-                    </thead>
-                    <tbody id="scheduleBody"></tbody>
-                </table>
-                
-                <div style="margin-top: 20px; font-size: 0.9em; background-color: #f1eaff; padding: 15px; border-radius: 8px;">
-                    <p><strong>Chú ý:</strong> Lịch tiêm này được tạo dựa trên lịch tiêm chủng mở rộng theo Thông tư 10/TT-BYT ngày 13/6/2024 của Bộ Y tế và khuyến cáo về các vaccine tự nguyện. Vui lòng tham khảo ý kiến bác sĩ để có lịch tiêm phù hợp nhất.</p>
-                    <p>Cập nhật lần cuối: 04/2025</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Tab 2: Xác định đối tượng tiêm -->
-        <div class="main-tab-content" id="target-main-tab">
-            <h2>🎯 Xác định đối tượng tiêm</h2>
-            <p>Chọn ngày tổ chức buổi tiêm để xác định độ tuổi phù hợp cho từng loại vaccine:</p>
-            
-            <div class="form-group">
-                <label for="vaccineDate">Ngày tổ chức buổi tiêm:</label>
-                <input type="date" id="vaccineDate" required>
-                <p class="tip">Hệ thống sẽ tính toán độ tuổi phù hợp cho từng loại vaccine vào ngày này</p>
-            </div>
-            
-            <button type="button" id="calculateTargetBtn">🔍 Xác định đối tượng
-                </button>
-            
-            <div id="targetResults">
-                <h2>📊 Đối tượng tiêm phù hợp</h2>
-                <table id="targetTable">
-                    <thead>
-                        <tr>
-                            <th>Loại vaccine</th>
-                            <th>Độ tuổi phù hợp</th>
-                            <th>Ngày sinh phù hợp</th>
-                            <th>Loại</th>
-                        </tr>
-                    </thead>
-                    <tbody id="targetBody"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+<div class="container">
+<h1>🌸 Hệ thống quản lý tiêm chủng 🌸</h1>
 
-    <script>
-        // Dữ liệu vaccine theo lịch tiêm chủng mở rộng mới nhất
-        const vaccineSchedule = {
-            required: [
-                { name: "BCG", age: 0, ageText: "Sơ sinh", description: "Phòng bệnh lao", interval: null },
-                { name: "Viêm gan B (mũi 1)", age: 0, ageText: "Sơ sinh (trong 24h)", description: "Phòng viêm gan B", interval: null },
-                { name: "Viêm gan B (mũi 2)", age: 30, ageText: "1 tháng", description: "Phòng viêm gan B", interval: 30 },
-                { name: "Bại liệt (mũi 1)", age: 60, ageText: "2 tháng", description: "Phòng bệnh bại liệt", interval: null },
-                { name: "5 trong 1 (mũi 1)", age: 60, ageText: "2 tháng", description: "Phòng bạch hầu, ho gà, uốn ván, viêm gan B, Hib", interval: null },
-                { name: "Bại liệt (mũi 2)", age: 90, ageText: "3 tháng", description: "Phòng bệnh bại liệt", interval: 30 },
-                { name: "5 trong 1 (mũi 2)", age: 90, ageText: "3 tháng", description: "Phòng bạch hầu, ho gà, uốn ván, viêm gan B, Hib", interval: 30 },
-                { name: "Bại liệt (mũi 3)", age: 120, ageText: "4 tháng", description: "Phòng bệnh bại liệt", interval: 30 },
-                { name: "5 trong 1 (mũi 3)", age: 120, ageText: "4 tháng", description: "Phòng bạch hầu, ho gà, uốn ván, viêm gan B, Hib", interval: 30 },
-                { name: "Sởi (mũi 1)", age: 270, ageText: "9 tháng", description: "Phòng bệnh sởi", interval: null },
-                { name: "Viêm gan B (mũi 3)", age: 180, ageText: "6 tháng", description: "Phòng viêm gan B", interval: null },
-                { name: "Sởi - Rubella (mũi 2)", age: 540, ageText: "18 tháng", description: "Phòng bệnh sởi và rubella", interval: 270 },
-                { name: "Bại liệt (mũi 4)", age: 540, ageText: "18 tháng", description: "Phòng bệnh bại liệt", interval: 420 },
-                { name: "DPT (mũi 4)", age: 540, ageText: "18 tháng", description: "Phòng bạch hầu, ho gà, uốn ván", interval: 420 },
-                { name: "Viêm não Nhật Bản (mũi 1)", age: 365, ageText: "12 tháng", description: "Phòng viêm não Nhật Bản", interval: null },
-                { name: "Viêm não Nhật Bản (mũi 2)", age: 545, ageText: "18 tháng", description: "Phòng viêm não Nhật Bản", interval: 180 },
-                { name: "DPT (mũi 5)", age: 1825, ageText: "5 tuổi", description: "Phòng bạch hầu, ho gà, uốn ván", interval: null },
-                { name: "Viêm não Nhật Bản (mũi 3)", age: 1825, ageText: "5 tuổi", description: "Phòng viêm não Nhật Bản", interval: null },
-                { name: "Td (mũi 1)", age: 4380, ageText: "12 tuổi", description: "Phòng uốn ván, bạch hầu", interval: null },
-                { name: "Td (mũi 2)", age: 5475, ageText: "15 tuổi", description: "Phòng uốn ván, bạch hầu", interval: 1095 }
-            ],
-            optional: [
-                { name: "Phế cầu (mũi 1)", age: 60, ageText: "2 tháng", description: "Phòng viêm phổi, viêm màng não mủ" },
-                { name: "Phế cầu (mũi 2)", age: 120, ageText: "4 tháng", description: "Phòng viêm phổi, viêm màng não mủ" },
-                { name: "Phế cầu (mũi 3)", age: 180, ageText: "6 tháng", description: "Phòng viêm phổi, viêm màng não mủ" },
-                { name: "Phế cầu (mũi nhắc)", age: 365, ageText: "12-15 tháng", description: "Phòng viêm phổi, viêm màng não mủ" },
-                { name: "Thủy đậu (mũi 1)", age: 365, ageText: "12-15 tháng", description: "Phòng bệnh thủy đậu" },
-                { name: "Thủy đậu (mũi 2)", age: 455, ageText: "15-18 tháng", description: "Phòng bệnh thủy đậu" },
-                { name: "Cúm", age: 180, ageText: "6 tháng trở lên", description: "Phòng bệnh cúm mùa (hàng năm)" },
-                { name: "MMR (mũi 1)", age: 365, ageText: "12 tháng", description: "Phòng sởi, quai bị, rubella" },
-                { name: "MMR (mũi 2)", age: 455, ageText: "15-18 tháng", description: "Phòng sởi, quai bị, rubella" },
-                { name: "HPV (mũi 1)", age: 3285, ageText: "9-14 tuổi", description: "Phòng ung thư cổ tử cung" },
-                { name: "HPV (mũi 2)", age: 3345, ageText: "2 tháng sau mũi 1", description: "Phòng ung thư cổ tử cung" },
-                { name: "HPV (mũi 3)", age: 3465, ageText: "6 tháng sau mũi 1", description: "Phòng ung thư cổ tử cung" },
-                { name: "Viêm gan A (mũi 1)", age: 365, ageText: "12 tháng trở lên", description: "Phòng viêm gan A" },
-                { name: "Viêm gan A (mũi 2)", age: 545, ageText: "6-12 tháng sau mũi 1", description: "Phòng viêm gan A" },
-                { name: "Não mô cầu", age: 270, ageText: "9 tháng trở lên", description: "Phòng viêm màng não do não mô cầu" },
-                { name: "Thương hàn", age: 730, ageText: "2 tuổi trở lên", description: "Phòng bệnh thương hàn" }
-            ],
-            adult: [
-                { name: "Cúm", ageRange: "18+ tuổi", description: "Tiêm hàng năm" },
-                { name: "Tdap", ageRange: "18+ tuổi", description: "Tiêm nhắc mỗi 10 năm" },
-                { name: "HPV", ageRange: "18-26 tuổi", description: "Nếu chưa tiêm đủ liều" },
-                { name: "MMR", ageRange: "18+ tuổi", description: "Nếu sinh sau 1957 và chưa tiêm" },
-                { name: "Viêm gan A", ageRange: "18+ tuổi", description: "2 liều cách nhau 6-12 tháng" },
-                { name: "Viêm gan B", ageRange: "18+ tuổi", description: "3 liều theo lịch 0-1-6 tháng" },
-                { name: "Phế cầu", ageRange: "65+ tuổi", description: "Hoặc có bệnh nền" },
-                { name: "Zona", ageRange: "50+ tuổi", description: "2 liều cách nhau 2-6 tháng" },
-                { name: "COVID-19", ageRange: "18+ tuổi", description: "Theo khuyến cáo mới nhất" },
-                { name: "Não mô cầu", ageRange: "18+ tuổi", description: "Đối tượng nguy cơ cao" }
-            ]
-        };
+<!-- Main Tabs -->
+<div class="main-tabs">
+<div class="main-tab active" data-main-tab="schedule">📅 Lịch tiêm chủng cho bé</div>
+<div class="main-tab" data-main-tab="target">🎯 Xác định đối tượng tiêm</div>
+</div>
 
-        let previousVaccines = [];
-        let vaccineCounter = 0;
+<!-- Tab 1: Lịch tiêm chủng cho bé -->
+<div class="main-tab-content active" id="schedule-main-tab">
+<div class="tabs">
+<div class="tab active" data-tab="required">Tiêm chủng cơ bản</div>
+<div class="tab" data-tab="optional">Tiêm chủng tự nguyện</div>
+<div class="tab" data-tab="adult">Tiêm chủng người lớn</div>
+</div>
 
-        // Tab switching functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            // Main tab switching
-            const mainTabs = document.querySelectorAll('.main-tab');
-            const mainTabContents = document.querySelectorAll('.main-tab-content');
+<div class="tab-content active" id="required-tab">
+<div class="form-group">
+<label for="birthdate">Ngày sinh của bé:</label>
+<input type="date" id="birthdate" required>
+<p class="tip">Nhập chính xác ngày sinh để hệ thống tính toán lịch tiêm phù hợp</p>
+</div>
 
-            mainTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const targetTab = this.getAttribute('data-main-tab');
-                    
-                    // Remove active class from all main tabs and contents
-                    mainTabs.forEach(t => t.classList.remove('active'));
-                    mainTabContents.forEach(content => content.classList.remove('active'));
-                    
-                    // Add active class to clicked tab and corresponding content
-                    this.classList.add('active');
-                    document.getElementById(targetTab + '-main-tab').classList.add('active');
-                });
-            });
+<div class="form-group">
+<label>Đã tiêm các mũi vaccine trước đó?</label>
+<div>
+<input type="radio" id="hasVaccine" name="previousVaccine" value="yes">
+<label for="hasVaccine" style="display: inline;">Có</label>
+<input type="radio" id="noVaccine" name="previousVaccine" value="no" checked style="margin-left: 20px;">
+<label for="noVaccine" style="display: inline;">Chưa</label>
+</div>
+</div>
 
-            // Sub tab switching
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = document.querySelectorAll('.tab-content');
+<div id="previousVaccines">
+<button type="button" id="addPreviousBtn">✨ Thêm mũi tiêm đã thực hiện</button>
+<div id="previousVaccinesList"></div>
+</div>
 
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const targetTab = this.getAttribute('data-tab');
-                    
-                    // Remove active class from all tabs and contents
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    
-                    // Add active class to clicked tab and corresponding content
-                    this.classList.add('active');
-                    document.getElementById(targetTab + '-tab').classList.add('active');
-                });
-            });
+<div class="form-group">
+<label for="parentName">Họ tên phụ huynh:</label>
+<input type="text" id="parentName" placeholder="Nhập họ tên phụ huynh">
+</div>
 
-            // Previous vaccine radio button handling
-            const hasVaccineRadio = document.getElementById('hasVaccine');
-            const noVaccineRadio = document.getElementById('noVaccine');
-            const previousVaccinesDiv = document.getElementById('previousVaccines');
+<div class="form-group">
+<label for="contactInfo">Thông tin liên hệ (Email hoặc SĐT):</label>
+<input type="text" id="contactInfo" placeholder="Nhập email hoặc số điện thoại">
+<p class="tip">Hệ thống sẽ gửi nhắc nhở khi đến lịch tiêm</p>
+</div>
+</div>
 
-            hasVaccineRadio.addEventListener('change', function() {
-                if (this.checked) {
-                    previousVaccinesDiv.style.display = 'block';
-                }
-            });
+<div class="tab-content" id="optional-tab">
+<h2>Vaccine tự nguyện <span class="vaccine-badge badge-optional">Tự nguyện</span></h2>
+<p>Chọn các vaccine bổ sung ngoài chương trình tiêm chủng mở rộng mà bạn muốn tiêm cho bé:</p>
 
-            noVaccineRadio.addEventListener('change', function() {
-                if (this.checked) {
-                    previousVaccinesDiv.style.display = 'none';
-                    previousVaccines = [];
-                    updatePreviousVaccinesList();
-                }
-            });
+<div class="checkbox-group">
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="optionalVaccines" value="pneumococcal"> Phế cầu (2 - 4 tháng)
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng viêm phổi, viêm màng não mủ, viêm tai giữa do phế cầu khuẩn. Tiêm từ 2 tháng tuổi, 3 mũi cơ bản + 1 mũi nhắc.</span>
+</div>
+</label>
+</div>
 
-            // Add previous vaccine button
-            document.getElementById('addPreviousBtn').addEventListener('click', addPreviousVaccine);
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="optionalVaccines" value="chickenpox"> Thủy đậu (12 - 15 tháng)
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng bệnh thủy đậu. Tiêm từ 12 tháng tuổi, 2 mũi cách nhau 3 tháng.</span>
+</div>
+</label>
+</div>
 
-            // Calculate button
-            document.getElementById('calculateBtn').addEventListener('click', calculateSchedule);
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="optionalVaccines" value="influenza"> Cúm (6 tháng trở lên)
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng bệnh cúm mùa. Tiêm từ 6 tháng tuổi, tiêm nhắc hàng năm.</span>
+</div>
+</label>
+</div>
 
-            // Calculate target button
-            document.getElementById('calculateTargetBtn').addEventListener('click', calculateTarget);
-        });
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="optionalVaccines" value="mmr"> Sởi - Quai bị - Rubella (12 tháng)
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Vaccine phối hợp phòng sởi, quai bị và rubella. Tiêm từ 12 tháng, 2 mũi cách nhau 3-6 tháng.</span>
+</div>
+</label>
+</div>
 
-        function addPreviousVaccine() {
-            vaccineCounter++;
-            const vaccineDiv = document.createElement('div');
-            vaccineDiv.className = 'previous-vaccine';
-            vaccineDiv.setAttribute('data-id', vaccineCounter);
-            
-            vaccineDiv.innerHTML = `
-                <div style="display: flex; gap: 10px; align-items: end; flex-wrap: wrap;">
-                    <div style="flex: 2; min-width: 200px;">
-                        <label>Tên vaccine:</label>
-                        <select class="vaccine-name" style="width: 100%;">
-                            <option value="">Chọn vaccine</option>
-                            <option value="BCG">BCG</option>
-                            <option value="Viêm gan B">Viêm gan B</option>
-                            <option value="Bại liệt">Bại liệt</option>
-                            <option value="5 trong 1">5 trong 1</option>
-                            <option value="DPT">DPT</option>
-                            <option value="Sởi">Sởi</option>
-                            <option value="Sởi - Rubella">Sởi - Rubella</option>
-                            <option value="Viêm não Nhật Bản">Viêm não Nhật Bản</option>
-                            <option value="Td">Td</option>
-                            <option value="Phế cầu">Phế cầu</option>
-                            <option value="Thủy đậu">Thủy đậu</option>
-                            <option value="MMR">MMR</option>
-                            <option value="HPV">HPV</option>
-                            <option value="Viêm gan A">Viêm gan A</option>
-                            <option value="Não mô cầu">Não mô cầu</option>
-                            <option value="Cúm">Cúm</option>
-                            <option value="Thương hàn">Thương hàn</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1; min-width: 100px;">
-                        <label>Mũi thứ:</label>
-                        <input type="number" class="dose-number" min="1" max="5" placeholder="1" style="width: 100%;">
-                    </div>
-                    <div style="flex: 2; min-width: 150px;">
-                        <label>Ngày tiêm:</label>
-                        <input type="date" class="vaccine-date" style="width: 100%;">
-                    </div>
-                    <div style="flex: 0;">
-                        <button type="button" class="remove-btn" onclick="removePreviousVaccine(${vaccineCounter})">Xóa</button>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('previousVaccinesList').appendChild(vaccineDiv);
-        }
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="optionalVaccines" value="hpv"> HPV (9 - 14 tuổi)
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng ung thư cổ tử cung và các bệnh do HPV. Tiêm cho trẻ 9-14 tuổi, 3 mũi theo lịch 0-2-6 tháng.</span>
+</div>
+</label>
+</div>
 
-        function removePreviousVaccine(id) {
-            const vaccineDiv = document.querySelector(`[data-id="${id}"]`);
-            if (vaccineDiv) {
-                vaccineDiv.remove();
-                // Remove from previousVaccines array
-                previousVaccines = previousVaccines.filter(v => v.id !== id);
-            }
-        }
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="optionalVaccines" value="hepatitisA"> Viêm gan A (12 tháng trở lên)
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng viêm gan A. Tiêm từ 12 tháng tuổi, 2 mũi cách nhau 6-12 tháng.</span>
+</div>
+</label>
+</div>
 
-        function updatePreviousVaccinesList() {
-            const listDiv = document.getElementById('previousVaccinesList');
-            listDiv.innerHTML = '';
-            vaccineCounter = 0;
-        }
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="optionalVaccines" value="meningococcal"> Não mô cầu (9 tháng trở lên)
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng viêm màng não do não mô cầu. Tiêm từ 9 tháng tuổi, lịch tiêm phụ thuộc vào loại vaccine.</span>
+</div>
+</label>
+</div>
 
-        function calculateSchedule() {
-            const birthdate = document.getElementById('birthdate').value;
-            if (!birthdate) {
-                alert('Vui lòng nhập ngày sinh của bé');
-                return;
-            }
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="optionalVaccines" value="typhoid"> Thương hàn (2 tuổi trở lên)
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng bệnh thương hàn. Tiêm từ 2 tuổi trở lên, tiêm nhắc sau 3 năm.</span>
+</div>
+</label>
+</div>
 
-            const birth = new Date(birthdate);
-            const today = new Date();
-            const ageInDays = Math.floor((today - birth) / (1000 * 60 * 60 * 24));
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="optionalVaccines" value="rabies"> Dại (Sau phơi nhiễm)
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng bệnh dại. Tiêm khi có nguy cơ phơi nhiễm (bị động vật cắn).</span>
+</div>
+</label>
+</div>
+</div>
+</div>
 
-            // Get previous vaccines
-            previousVaccines = [];
-            const previousVaccineElements = document.querySelectorAll('.previous-vaccine');
-            previousVaccineElements.forEach(element => {
-                const vaccineName = element.querySelector('.vaccine-name').value;
-                const doseNumber = element.querySelector('.dose-number').value;
-                const vaccineDate = element.querySelector('.vaccine-date').value;
-                const id = element.getAttribute('data-id');
-                
-                if (vaccineName && vaccineDate) {
-                    previousVaccines.push({
-                        id: parseInt(id),
-                        name: vaccineName,
-                        dose: doseNumber ? parseInt(doseNumber) : 1,
-                        date: new Date(vaccineDate)
-                    });
-                }
-            });
+<div class="tab-content" id="adult-tab">
+<h2>Vaccine cho người lớn <span class="vaccine-badge badge-optional">Khuyến nghị</span></h2>
+<p>Chọn các vaccine khuyến nghị cho người lớn:</p>
 
-            // Get selected optional vaccines
-            const selectedOptional = [];
-            document.querySelectorAll('input[name="optionalVaccines"]:checked').forEach(checkbox => {
-                selectedOptional.push(checkbox.value);
-            });
+<div class="form-group">
+<label for="adultBirthdate">Ngày sinh:</label>
+<input type="date" id="adultBirthdate" required>
+</div>
 
-            // Get selected adult vaccines
-            const selectedAdult = [];
-            document.querySelectorAll('input[name="adultVaccines"]:checked').forEach(checkbox => {
-                selectedAdult.push(checkbox.value);
-            });
+<div class="form-group">
+<label for="gender">Giới tính:</label>
+<select id="gender">
+<option value="male">Nam</option>
+<option value="female">Nữ</option>
+</select>
+</div>
 
-            // Generate schedule
-            let allVaccines = [...vaccineSchedule.required];
+<div class="checkbox-group">
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="adultVaccines" value="influenza"> Cúm
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng bệnh cúm mùa. Tiêm nhắc hàng năm cho tất cả người lớn.</span>
+</div>
+</label>
+</div>
 
-            // Add optional vaccines based on selection
-            if (selectedOptional.includes('pneumococcal')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Phế cầu')));
-            }
-            if (selectedOptional.includes('chickenpox')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Thủy đậu')));
-            }
-            if (selectedOptional.includes('influenza')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name === 'Cúm'));
-            }
-            if (selectedOptional.includes('mmr')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('MMR')));
-            }
-            if (selectedOptional.includes('hpv')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('HPV')));
-            }
-            if (selectedOptional.includes('hepatitisA')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Viêm gan A')));
-            }
-            if (selectedOptional.includes('meningococcal')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Não mô cầu')));
-            }
-            if (selectedOptional.includes('typhoid')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Thương hàn')));
-            }
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="adultVaccines" value="tdap"> Uốn ván-Bạch hầu-Ho gà (Tdap)
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng bệnh uốn ván, bạch hầu và ho gà. Tiêm nhắc mỗi 10 năm.</span>
+</div>
+</label>
+</div>
 
-            // Sort vaccines by age
-            allVaccines.sort((a, b) => a.age - b.age);
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="adultVaccines" value="hpv"> HPV
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng ung thư do HPV. Tiêm cho người lớn đến 26 tuổi nếu chưa tiêm đủ liều.</span>
+</div>
+</label>
+</div>
 
-            // Generate table
-            generateScheduleTable(allVaccines, birth, ageInDays);
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="adultVaccines" value="mmr"> Sởi-Quai bị-Rubella (MMR)
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng bệnh sởi, quai bị và rubella. Tiêm cho người lớn sinh sau năm 1957 nếu chưa tiêm đủ liều.</span>
+</div>
+</label>
+</div>
 
-            // Show results
-            document.getElementById('results').style.display = 'block';
-            
-            // Show child info
-            const parentName = document.getElementById('parentName').value || 'Chưa nhập';
-            const contactInfo = document.getElementById('contactInfo').value || 'Chưa nhập';
-            document.getElementById('childInfo').innerHTML = `
-                <strong>Thông tin:</strong> Phụ huynh: ${parentName} | Liên hệ: ${contactInfo} | Ngày sinh bé: ${birth.toLocaleDateString('vi-VN')} | Tuổi hiện tại: ${Math.floor(ageInDays/30)} tháng ${ageInDays%30} ngày
-            `;
-        }
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="adultVaccines" value="hepatitisA"> Viêm gan A
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng viêm gan A. Tiêm 2 liều cách nhau 6-12 tháng.</span>
+</div>
+</label>
+</div>
 
-        function generateScheduleTable(vaccines, birth, currentAge) {
-            const tbody = document.getElementById('scheduleBody');
-            tbody.innerHTML = '';
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="adultVaccines" value="hepatitisB"> Viêm gan B
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng viêm gan B. Tiêm 3 liều theo lịch 0-1-6 tháng.</span>
+</div>
+</label>
+</div>
 
-            vaccines.forEach(vaccine => {
-                const vaccineDate = new Date(birth);
-                vaccineDate.setDate(vaccineDate.getDate() + vaccine.age);
-                
-                const row = document.createElement('tr');
-                
-                let status = '';
-                let statusClass = '';
-                
-                if (vaccine.age <= currentAge - 7) { // Quá hạn 1 tuần
-                    status = 'Cần tiêm gấp';
-                    statusClass = 'status-due';
-                    row.classList.add('due');
-                } else if (vaccine.age <= currentAge + 30) { // Trong vòng 1 tháng
-                    status = 'Sắp đến lịch';
-                    statusClass = 'status-coming';
-                    row.classList.add('coming');
-                } else if (isVaccineCompleted(vaccine)) {
-                    status = 'Đã tiêm';
-                    statusClass = 'status-complete';
-                    row.classList.add('complete');
-                } else {
-                    status = 'Chưa đến lịch';
-                    statusClass = '';
-                }
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="adultVaccines" value="pneumococcal"> Phế cầu
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng bệnh do phế cầu khuẩn. Khuyến nghị cho người từ 65 tuổi trở lên hoặc có bệnh nền.</span>
+</div>
+</label>
+</div>
 
-                row.innerHTML = `
-                    <td><strong>${vaccine.ageText}</strong></td>
-                    <td>
-                        ${vaccine.name}
-                        <div class="vaccine-info">${vaccine.description}</div>
-                    </td>
-                    <td class="vaccine-date">${vaccineDate.toLocaleDateString('vi-VN')}</td>
-                    <td class="${statusClass}">${status}</td>
-                `;
-                
-                tbody.appendChild(row);
-            });
-        }
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="adultVaccines" value="shingles"> Zona (Shingles)
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng bệnh zona (herpes zoster). Khuyến nghị cho người từ 50 tuổi trở lên.</span>
+</div>
+</label>
+</div>
 
-        function isVaccineCompleted(vaccine) {
-            // Check if this vaccine was already given
-            return previousVaccines.some(pv => {
-                const vaccineName = vaccine.name.split(' (')[0]; // Remove dose info
-                const previousName = pv.name;
-                return previousName.includes(vaccineName) || vaccineName.includes(previousName);
-            });
-        }
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="adultVaccines" value="covid19"> COVID-19
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng bệnh COVID-19. Tiêm nhắc theo khuyến cáo mới nhất.</span>
+</div>
+</label>
+</div>
 
-        function calculateTarget() {
-            const vaccineDate = document.getElementById('vaccineDate').value;
-            if (!vaccineDate) {
-                alert('Vui lòng chọn ngày tổ chức buổi tiêm');
-                return;
-            }
+<div class="checkbox-item">
+<label>
+<input type="checkbox" name="adultVaccines" value="meningococcal"> Não mô cầu
+<div class="tooltip">
+<span class="info-icon">i</span>
+<span class="tooltiptext">Phòng viêm màng não do não mô cầu. Khuyến nghị cho một số đối tượng nguy cơ cao.</span>
+</div>
+</label>
+</div>
+</div>
+</div>
 
-            const targetDate = new Date(vaccineDate);
-            generateTargetTable(targetDate);
-            document.getElementById('targetResults').style.display = 'block';
-        }
+<button type="button" id="calculateBtn">🔍 Xem lịch tiêm</button>
 
-        function generateTargetTable(targetDate) {
-            const tbody = document.getElementById('targetBody');
-            tbody.innerHTML = '';
+<div id="results">
+<h2>🗓️ Lịch tiêm chủng</h2>
+<p id="childInfo"></p>
+<table id="scheduleTable">
+<thead>
+<tr>
+<th>Độ tuổi</th>
+<th>Vaccine</th>
+<th>Ngày tiêm</th>
+<th>Trạng thái</th>
+</tr>
+</thead>
+<tbody id="scheduleBody"></tbody>
+</table>
 
-            // Combine all vaccines
-            const allVaccines = [
-                ...vaccineSchedule.required.map(v => ({...v, type: 'Bắt buộc', typeClass: 'badge-required'})),
-                ...vaccineSchedule.optional.map(v => ({...v, type: 'Tự nguyện', typeClass: 'badge-optional'}))
-            ];
+<div style="margin-top: 20px; font-size: 0.9em; background-color: #f1eaff; padding: 15px; border-radius: 8px;">
+<p><strong>Chú ý:</strong> Lịch tiêm này được tạo dựa trên lịch tiêm chủng mở rộng theo Thông tư 10/TT-BYT ngày 13/6/2024 của Bộ Y tế và khuyến cáo về các vaccine tự nguyện. Vui lòng tham khảo ý kiến bác sĩ để có lịch tiêm phù hợp nhất.</p>
+<p>Cập nhật lần cuối: 04/2025</p>
+</div>
+</div>
+</div>
 
-            // Sort by age
-            allVaccines.sort((a, b) => a.age - b.age);
+<!-- Tab 2: Xác định đối tượng tiêm -->
+<div class="main-tab-content" id="target-main-tab">
+<h2>🎯 Xác định đối tượng tiêm</h2>
+<p>Chọn ngày tổ chức buổi tiêm để xác định độ tuổi phù hợp cho từng loại vaccine:</p>
 
-            allVaccines.forEach(vaccine => {
-                // Calculate suitable birth date range
-                const minBirthDate = new Date(targetDate);
-                const maxBirthDate = new Date(targetDate);
-                
-                // Allow ±30 days window for vaccination
-                minBirthDate.setDate(minBirthDate.getDate() - vaccine.age - 30);
-                maxBirthDate.setDate(maxBirthDate.getDate() - vaccine.age + 30);
+<div class="form-group">
+<label for="vaccineDate">Ngày tổ chức buổi tiêm:</label>
+<input type="date" id="vaccineDate" required>
+<p class="tip">Hệ thống sẽ tính toán độ tuổi phù hợp cho từng loại vaccine vào ngày này</p>
+</div>
 
-                const row = document.createElement('tr');
-                row.classList.add('suitable-row');
+<button type="button" id="calculateTargetBtn">🔍 Xác định đối tượng</button>
 
-                row.innerHTML = `
-                    <td>
-                        ${vaccine.name}
-                        <span class="vaccine-badge ${vaccine.typeClass}">${vaccine.type}</span>
-                        <div class="vaccine-info">${vaccine.description}</div>
-                    </td>
-                    <td class="age-range">${vaccine.ageText}</td>
-                    <td class="status-suitable">
-                        ${minBirthDate.toLocaleDateString('vi-VN')} đến ${maxBirthDate.toLocaleDateString('vi-VN')}
-                    </td>
-                    <td>
-                        <span class="vaccine-badge ${vaccine.typeClass}">${vaccine.type}</span>
-                    </td>
-                `;
-                
-                tbody.appendChild(row);
-            });
+<div id="targetResults">
+<h2>📊 Đối tượng tiêm phù hợp</h2>
 
-            // Add adult vaccines
-            vaccineSchedule.adult.forEach(vaccine => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>
-                        ${vaccine.name} (Người lớn)
-                        <span class="vaccine-badge badge-optional">Khuyến nghị</span>
-                        <div class="vaccine-info">${vaccine.description}</div>
-                    </td>
-                    <td class="age-range">${vaccine.ageRange}</td>
-                    <td class="status-suitable">Phù hợp theo độ tuổi</td>
-                    <td>
-                        <span class="vaccine-badge badge-optional">Khuyến nghị</span>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-    </script>
+<!-- Target sub-tabs -->
+<div class="tabs">
+<div class="tab active" data-target-tab="required-target">Vaccine bắt buộc</div>
+<div class="tab" data-target-tab="optional-target">Vaccine tự nguyện</div>
+</div>
+
+<div class="tab-content active" id="required-target-tab">
+<table id="targetTableRequired">
+<thead>
+<tr>
+<th>Loại vaccine</th>
+<th>Độ tuổi phù hợp</th>
+<th>Ngày sinh tiêm đúng lịch</th>
+<th>Ngày sinh tiêm bù</th>
+</tr>
+</thead>
+<tbody id="targetBodyRequired"></tbody>
+</table>
+</div>
+
+<div class="tab-content" id="optional-target-tab">
+<table id="targetTableOptional">
+<thead>
+<tr>
+<th>Loại vaccine</th>
+<th>Độ tuổi phù hợp</th>
+<th>Ngày sinh tiêm đúng lịch</th>
+<th>Ngày sinh tiêm bù</th>
+</tr>
+</thead>
+<tbody id="targetBodyOptional"></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+// Dữ liệu vaccine theo lịch tiêm chủng mở rộng mới nhất
+const vaccineSchedule = {
+required: [
+{ name: "BCG", age: 0, ageText: "Sơ sinh", description: "Phòng bệnh lao", interval: null },
+{ name: "Viêm gan B (mũi 1)", age: 0, ageText: "Sơ sinh (trong 24h)", description: "Phòng viêm gan B", interval: null },
+{ name: "Viêm gan B (mũi 2)", age: 30, ageText: "1 tháng", description: "Phòng viêm gan B", interval: 30 },
+{ name: "DPT 1", age: 60, ageText: "2 tháng", description: "Phòng bạch hầu, ho gà, uốn ván", interval: null },
+{ name: "IPV 1", age: 60, ageText: "2 tháng", description: "Phòng bệnh bại liệt", interval: null },
+{ name: "DPT 2", age: 90, ageText: "3 tháng", description: "Phòng bạch hầu, ho gà, uốn ván", interval: 30 },
+{ name: "IPV 2", age: 90, ageText: "3 tháng", description: "Phòng bệnh bại liệt", interval: 30 },
+{ name: "DPT 3", age: 120, ageText: "4 tháng", description: "Phòng bạch hầu, ho gà, uốn ván", interval: 30 },
+{ name: "Sởi 1", age: 270, ageText: "9 tháng", description: "Phòng bệnh sởi", interval: null },
+{ name: "Viêm gan B (mũi 3)", age: 180, ageText: "6 tháng", description: "Phòng viêm gan B", interval: null },
+{ name: "Sởi 2", age: 540, ageText: "18 tháng", description: "Phòng bệnh sởi và rubella", interval: 270 },
+{ name: "DPT 4", age: 540, ageText: "18 tháng", description: "Phòng bạch hầu, ho gà, uốn ván", interval: 420 },
+{ name: "IPV 3", age: 540, ageText: "18 tháng", description: "Phòng bệnh bại liệt", interval: 450 },
+{ name: "JE 1", age: 365, ageText: "12 tháng", description: "Phòng viêm não Nhật Bản", interval: null },
+{ name: "JE 2", age: 730, ageText: "24 tháng", description: "Phòng viêm não Nhật Bản", interval: 365 },
+{ name: "DPT 5", age: 1825, ageText: "5 tuổi", description: "Phòng bạch hầu, ho gà, uốn ván", interval: 1460 }
+],
+optional: [
+{ name: "Phế cầu 1", age: 60, ageText: "2 tháng", description: "Phòng viêm phổi, viêm màng não do phế cầu khuẩn", interval: null },
+{ name: "Phế cầu 2", age: 120, ageText: "4 tháng", description: "Phòng viêm phổi, viêm màng não do phế cầu khuẩn", interval: 60 },
+{ name: "Phế cầu 3", age: 180, ageText: "6 tháng", description: "Phòng viêm phổi, viêm màng não do phế cầu khuẩn", interval: 60 },
+{ name: "Phế cầu 4", age: 365, ageText: "12 tháng", description: "Phòng viêm phổi, viêm màng não do phế cầu khuẩn", interval: 185 },
+{ name: "Thủy đậu 1", age: 365, ageText: "12 tháng", description: "Phòng bệnh thủy đậu", interval: null },
+{ name: "Thủy đậu 2", age: 455, ageText: "15 tháng", description: "Phòng bệnh thủy đậu", interval: 90 },
+{ name: "Cúm (hàng năm)", age: 180, ageText: "6 tháng trở lên", description: "Phòng bệnh cúm mùa", interval: 365 },
+{ name: "MMR 1", age: 365, ageText: "12 tháng", description: "Phòng sởi, quai bị, rubella", interval: null },
+{ name: "MMR 2", age: 455, ageText: "15 tháng", description: "Phòng sởi, quai bị, rubella", interval: 90 },
+{ name: "Viêm gan A 1", age: 365, ageText: "12 tháng", description: "Phòng viêm gan A", interval: null },
+{ name: "Viêm gan A 2", age: 545, ageText: "18 tháng", description: "Phòng viêm gan A", interval: 180 },
+{ name: "Não mô cầu", age: 270, ageText: "9 tháng", description: "Phòng viêm màng não do não mô cầu", interval: null },
+{ name: "Thương hàn", age: 730, ageText: "2 tuổi", description: "Phòng bệnh thương hàn", interval: null },
+{ name: "HPV 1", age: 3285, ageText: "9 tuổi", description: "Phòng ung thư cổ tử cung", interval: null },
+{ name: "HPV 2", age: 3345, ageText: "9 tuổi 2 tháng", description: "Phòng ung thư cổ tử cung", interval: 60 },
+{ name: "HPV 3", age: 3465, ageText: "9 tuổi 6 tháng", description: "Phòng ung thư cổ tử cung", interval: 180 }
+]
+};
+
+let previousVaccines = [];
+
+// Tab functionality
+document.addEventListener('DOMContentLoaded', function() {
+// Main tabs
+const mainTabs = document.querySelectorAll('.main-tab');
+const mainTabContents = document.querySelectorAll('.main-tab-content');
+
+mainTabs.forEach(tab => {
+tab.addEventListener('click', () => {
+const targetTab = tab.dataset.mainTab;
+mainTabs.forEach(t => t.classList.remove('active'));
+mainTabContents.forEach(tc => tc.classList.remove('active'));
+tab.classList.add('active');
+document.getElementById(targetTab + '-main-tab').classList.add('active');
+});
+});
+
+// Sub tabs for schedule
+const tabs = document.querySelectorAll('.tab');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+tab.addEventListener('click', () => {
+const targetTab = tab.dataset.tab;
+if (targetTab) {
+tabs.forEach(t => t.classList.remove('active'));
+tabContents.forEach(tc => tc.classList.remove('active'));
+tab.classList.add('active');
+document.getElementById(targetTab + '-tab').classList.add('active');
+}
+
+// Handle target tabs
+const targetTab = tab.dataset.targetTab;
+if (targetTab) {
+document.querySelectorAll('[data-target-tab]').forEach(t => t.classList.remove('active'));
+document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+tab.classList.add('active');
+document.getElementById(targetTab + '-tab').classList.add('active');
+}
+});
+});
+
+// Previous vaccine functionality
+const hasVaccineRadio = document.getElementById('hasVaccine');
+const noVaccineRadio = document.getElementById('noVaccine');
+const previousVaccinesDiv = document.getElementById('previousVaccines');
+
+function togglePreviousVaccines() {
+if (hasVaccineRadio.checked) {
+previousVaccinesDiv.style.display = 'block';
+} else {
+previousVaccinesDiv.style.display = 'none';
+}
+}
+
+hasVaccineRadio.addEventListener('change', togglePreviousVaccines);
+noVaccineRadio.addEventListener('change', togglePreviousVaccines);
+
+document.getElementById('addPreviousBtn').addEventListener('click', addPreviousVaccine);
+document.getElementById('calculateBtn').addEventListener('click', calculateSchedule);
+document.getElementById('calculateTargetBtn').addEventListener('click', calculateTargets);
+});
+
+function addPreviousVaccine() {
+const div = document.createElement('div');
+div.className = 'previous-vaccine';
+div.innerHTML = `
+<label>Tên vaccine:</label>
+<input type="text" class="prev-vaccine-name" placeholder="VD: DPT 1, Sởi 1, BCG...">
+<label>Ngày tiêm:</label>
+<input type="date" class="prev-vaccine-date">
+<button type="button" class="remove-btn" onclick="removePreviousVaccine(this)">Xóa</button>
+`;
+document.getElementById('previousVaccinesList').appendChild(div);
+}
+
+function removePreviousVaccine(button) {
+button.parentElement.remove();
+}
+
+function calculateSchedule() {
+const birthdate = document.getElementById('birthdate').value;
+if (!birthdate) {
+alert('Vui lòng nhập ngày sinh của bé!');
+return;
+}
+
+const parentName = document.getElementById('parentName').value;
+const contactInfo = document.getElementById('contactInfo').value;
+
+// Get selected vaccines
+const selectedOptional = [];
+const optionalCheckboxes = document.querySelectorAll('input[name="optionalVaccines"]:checked');
+optionalCheckboxes.forEach(cb => selectedOptional.push(cb.value));
+
+const selectedAdult = [];
+const adultCheckboxes = document.querySelectorAll('input[name="adultVaccines"]:checked');
+adultCheckboxes.forEach(cb => selectedAdult.push(cb.value));
+
+// Get previous vaccines
+previousVaccines = [];
+const prevVaccines = document.querySelectorAll('.previous-vaccine');
+prevVaccines.forEach(pv => {
+const name = pv.querySelector('.prev-vaccine-name').value;
+const date = pv.querySelector('.prev-vaccine-date').value;
+if (name && date) {
+previousVaccines.push({ name, date });
+}
+});
+
+const activeTab = document.querySelector('.tab.active').dataset.tab;
+let schedule = [];
+
+if (activeTab === 'required') {
+schedule = vaccineSchedule.required;
+} else if (activeTab === 'optional') {
+schedule = getOptionalSchedule(selectedOptional);
+} else if (activeTab === 'adult') {
+const adultBirthdate = document.getElementById('adultBirthdate').value;
+const gender = document.getElementById('gender').value;
+schedule = getAdultSchedule(selectedAdult, adultBirthdate, gender);
+}
+
+displaySchedule(schedule, birthdate || document.getElementById('adultBirthdate').value, parentName, contactInfo);
+}
+
+function getOptionalSchedule(selected) {
+const optionalMap = {
+'pneumococcal': ['Phế cầu 1', 'Phế cầu 2', 'Phế cầu 3', 'Phế cầu 4'],
+'chickenpox': ['Thủy đậu 1', 'Thủy đậu 2'],
+'influenza': ['Cúm (hàng năm)'],
+'mmr': ['MMR 1', 'MMR 2'],
+'hpv': ['HPV 1', 'HPV 2', 'HPV 3'],
+'hepatitisA': ['Viêm gan A 1', 'Viêm gan A 2'],
+'meningococcal': ['Não mô cầu'],
+'typhoid': ['Thương hàn'],
+'rabies': []
+};
+
+let schedule = [];
+selected.forEach(vaccine => {
+const vaccineNames = optionalMap[vaccine] || [];
+vaccineNames.forEach(name => {
+const vaccineData = vaccineSchedule.optional.find(v => v.name === name);
+if (vaccineData) {
+schedule.push(vaccineData);
+}
+});
+});
+
+return schedule.sort((a, b) => a.age - b.age);
+}
+
+function getAdultSchedule(selected, birthdate, gender) {
+const adultSchedule = [
+{ name: "Cúm (hàng năm)", age: 0, ageText: "Hàng năm", description: "Phòng bệnh cúm mùa" },
+{ name: "Tdap", age: 0, ageText: "Mỗi 10 năm", description: "Phòng uốn ván, bạch hầu, ho gà" },
+{ name: "HPV", age: 0, ageText: "Đến 26 tuổi", description: "Phòng ung thư do HPV" },
+{ name: "MMR", age: 0, ageText: "Nếu chưa tiêm", description: "Phòng sởi, quai bị, rubella" },
+{ name: "Viêm gan A", age: 0, ageText: "2 mũi", description: "Phòng viêm gan A" },
+{ name: "Viêm gan B", age: 0, ageText: "3 mũi", description: "Phòng viêm gan B" },
+{ name: "Phế cầu", age: 0, ageText: "Từ 65 tuổi", description: "Phòng bệnh do phế cầu khuẩn" },
+{ name: "Zona", age: 0, ageText: "Từ 50 tuổi", description: "Phòng bệnh zona" },
+{ name: "COVID-19", age: 0, ageText: "Theo khuyến cáo", description: "Phòng bệnh COVID-19" },
+{ name: "Não mô cầu", age: 0, ageText: "Đối tượng nguy cơ", description: "Phòng viêm màng não" }
+];
+
+return adultSchedule.filter(v => selected.includes(v.name.toLowerCase().replace(/[^a-z0-9]/g, '')));
+}
+
+function displaySchedule(schedule, birthdate, parentName, contactInfo) {
+const resultsDiv = document.getElementById('results');
+const childInfoP = document.getElementById('childInfo');
+const scheduleBody = document.getElementById('scheduleBody');
+
+const birth = new Date(birthdate);
+const today = new Date();
+const ageInDays = Math.floor((today - birth) / (1000 * 60 * 60 * 24));
+
+let childInfoText = '';
+if (parentName) {
+childInfoText += `Phụ huynh: ${parentName}<br>`;
+}
+if (contactInfo) {
+childInfoText += `Liên hệ: ${contactInfo}<br>`;
+}
+
+const years = Math.floor(ageInDays / 365);
+const months = Math.floor((ageInDays % 365) / 30);
+childInfoText += `Ngày sinh: ${birth.toLocaleDateString('vi-VN')}<br>`;
+childInfoText += `Tuổi hiện tại: ${years} tuổi ${months} tháng`;
+
+childInfoP.innerHTML = childInfoText;
+
+scheduleBody.innerHTML = '';
+
+schedule.forEach(vaccine => {
+const vaccineDate = new Date(birth);
+vaccineDate.setDate(vaccineDate.getDate() + vaccine.age);
+
+const row = document.createElement('tr');
+
+let status = '';
+let statusClass = '';
+if (ageInDays >= vaccine.age) {
+if (isPreviouslyVaccinated(vaccine.name)) {
+status = 'Đã tiêm';
+statusClass = 'status-complete';
+} else {
+status = 'Cần tiêm';
+statusClass = 'status-due';
+}
+} else {
+const daysUntil = vaccine.age - ageInDays;
+if (daysUntil <= 30) {
+status = `Sắp đến (${daysUntil} ngày)`;
+statusClass = 'status-coming';
+} else {
+status = `Chưa đến lịch`;
+statusClass = '';
+}
+}
+
+row.innerHTML = `
+<td>${vaccine.ageText}</td>
+<td>${vaccine.name}<br><small class="vaccine-info">${vaccine.description}</small></td>
+<td>${vaccineDate.toLocaleDateString('vi-VN')}</td>
+<td class="${statusClass}">${status}</td>
+`;
+
+scheduleBody.appendChild(row);
+});
+
+resultsDiv.style.display = 'block';
+}
+
+function isPreviouslyVaccinated(vaccineName) {
+return previousVaccines.some(pv => 
+pv.name.toLowerCase().includes(vaccineName.toLowerCase()) ||
+vaccineName.toLowerCase().includes(pv.name.toLowerCase())
+);
+}
+
+function calculateTargets() {
+const vaccineDate = document.getElementById('vaccineDate').value;
+if (!vaccineDate) {
+alert('Vui lòng chọn ngày tổ chức buổi tiêm!');
+return;
+}
+
+const targetDate = new Date(vaccineDate);
+displayTargets(targetDate);
+}
+
+function displayTargets(targetDate) {
+const targetResults = document.getElementById('targetResults');
+const targetBodyRequired = document.getElementById('targetBodyRequired');
+const targetBodyOptional = document.getElementById('targetBodyOptional');
+
+targetBodyRequired.innerHTML = '';
+targetBodyOptional.innerHTML = '';
+
+// Process required vaccines
+vaccineSchedule.required.forEach(vaccine => {
+const row = createTargetRow(vaccine, targetDate);
+targetBodyRequired.appendChild(row);
+});
+
+// Process optional vaccines
+vaccineSchedule.optional.forEach(vaccine => {
+const row = createTargetRow(vaccine, targetDate);
+targetBodyOptional.appendChild(row);
+});
+
+targetResults.style.display = 'block';
+}
+
+function createTargetRow(vaccine, targetDate) {
+const row = document.createElement('tr');
+
+// Calculate birth date for exact schedule
+const exactBirthDate = new Date(targetDate);
+exactBirthDate.setDate(exactBirthDate.getDate() - vaccine.age);
+
+// Calculate birth date range for catch-up (allow 1 year flexibility)
+const catchupBirthDateStart = new Date(targetDate);
+catchupBirthDateStart.setDate(catchupBirthDateStart.getDate() - vaccine.age - 365);
+const catchupBirthDateEnd = new Date(targetDate);
+catchupBirthDateEnd.setDate(catchupBirthDateEnd.getDate() - vaccine.age + 30);
+
+// Check if suitable for target date
+const today = new Date();
+const minAge = vaccine.age;
+const maxAge = vaccine.age + 730; // 2 years flexibility
+
+const suitableBirthStart = new Date(targetDate);
+suitableBirthStart.setDate(suitableBirthStart.getDate() - maxAge);
+const suitableBirthEnd = new Date(targetDate);
+suitableBirthEnd.setDate(suitableBirthEnd.getDate() - minAge);
+
+const isSuitable = targetDate >= today;
+
+row.innerHTML = `
+<td>${vaccine.name}<br><small class="vaccine-info">${vaccine.description}</small></td>
+<td>${vaccine.ageText}</td>
+<td>${exactBirthDate.toLocaleDateString('vi-VN')}</td>
+<td>${catchupBirthDateStart.toLocaleDateString('vi-VN')} - ${catchupBirthDateEnd.toLocaleDateString('vi-VN')}</td>
+`;
+
+if (isSuitable) {
+row.classList.add('suitable-row');
+}
+
+return row;
+}
+
+// Initialize tooltips
+document.addEventListener('DOMContentLoaded', function() {
+// Set default date to today for vaccine date
+const today = new Date();
+const todayString = today.getFullYear() + '-' + 
+String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+String(today.getDate()).padStart(2, '0');
+document.getElementById('vaccineDate').value = todayString;
+
+// Set adult birthdate default
+document.getElementById('adultBirthdate').value = '1990-01-01';
+});
+</script>
 </body>
 </html>
