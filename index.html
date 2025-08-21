@@ -588,7 +588,7 @@
                             <input type="checkbox" name="adultVaccines" value="hepatitisA"> Viêm gan A
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm gan A. Tiêm 2 liều cách nhau 6-12 tháng.</span>
+                                <span class="tooltiptext">Phòng viêm gan A.Tiêm 2 liều cách nhau 6-12 tháng.</span>
                             </div>
                         </label>
                     </div>
@@ -681,22 +681,43 @@
                 <p class="tip">Hệ thống sẽ tính toán độ tuổi phù hợp cho từng loại vaccine vào ngày này</p>
             </div>
             
-            <button type="button" id="calculateTargetBtn">🔍 Xác định đối tượng
-                </button>
+            <button type="button" id="calculateTargetBtn">🔍 Xác định đối tượng</button>
             
             <div id="targetResults">
                 <h2>📊 Đối tượng tiêm phù hợp</h2>
-                <table id="targetTable">
-                    <thead>
-                        <tr>
-                            <th>Loại vaccine</th>
-                            <th>Độ tuổi phù hợp</th>
-                            <th>Ngày sinh phù hợp</th>
-                            <th>Loại</th>
-                        </tr>
-                    </thead>
-                    <tbody id="targetBody"></tbody>
-                </table>
+                
+                <div class="tabs">
+                    <div class="tab active" data-target-tab="required">Vaccine bắt buộc</div>
+                    <div class="tab" data-target-tab="optional">Vaccine tự nguyện</div>
+                </div>
+                
+                <div class="tab-content active" id="required-target-tab">
+                    <table id="targetTableRequired">
+                        <thead>
+                            <tr>
+                                <th>Loại vaccine</th>
+                                <th>Độ tuổi</th>
+                                <th>Ngày sinh tiêm đúng lịch</th>
+                                <th>Ngày sinh tiêm bù</th>
+                            </tr>
+                        </thead>
+                        <tbody id="targetBodyRequired"></tbody>
+                    </table>
+                </div>
+                
+                <div class="tab-content" id="optional-target-tab">
+                    <table id="targetTableOptional">
+                        <thead>
+                            <tr>
+                                <th>Loại vaccine</th>
+                                <th>Độ tuổi</th>
+                                <th>Ngày sinh tiêm đúng lịch</th>
+                                <th>Ngày sinh tiêm bù</th>
+                            </tr>
+                        </thead>
+                        <tbody id="targetBodyOptional"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -725,6 +746,21 @@
                 { name: "Viêm não Nhật Bản (mũi 3)", age: 1825, ageText: "5 tuổi", description: "Phòng viêm não Nhật Bản", interval: null },
                 { name: "Td (mũi 1)", age: 4380, ageText: "12 tuổi", description: "Phòng uốn ván, bạch hầu", interval: null },
                 { name: "Td (mũi 2)", age: 5475, ageText: "15 tuổi", description: "Phòng uốn ván, bạch hầu", interval: 1095 }
+            ],
+            // Danh sách vaccine bắt buộc cho tab xác định đối tượng
+            targetRequired: [
+                { name: "DPT 1", age: 60, ageText: "2 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
+                { name: "DPT 2", age: 90, ageText: "3 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
+                { name: "DPT 3", age: 120, ageText: "4 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
+                { name: "IPV 1", age: 60, ageText: "2 tháng", description: "Phòng bệnh bại liệt" },
+                { name: "IPV 2", age: 90, ageText: "3 tháng", description: "Phòng bệnh bại liệt" },
+                { name: "Sởi 1", age: 270, ageText: "9 tháng", description: "Phòng bệnh sởi" },
+                { name: "Sởi 2", age: 540, ageText: "18 tháng", description: "Phòng bệnh sởi" },
+                { name: "DPT 4", age: 540, ageText: "18 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
+                { name: "VNNB 1", age: 365, ageText: "12 tháng", description: "Phòng viêm não Nhật Bản" },
+                { name: "VNNB 2", age: 545, ageText: "18 tháng", description: "Phòng viêm não Nhật Bản" },
+                { name: "VNNB 3-5 tuổi", age: 1825, ageText: "5 tuổi", description: "Phòng viêm não Nhật Bản" },
+                { name: "Td", age: 4380, ageText: "12 tuổi", description: "Phòng uốn ván, bạch hầu" }
             ],
             optional: [
                 { name: "Phế cầu (mũi 1)", age: 60, ageText: "2 tháng", description: "Phòng viêm phổi, viêm màng não mủ" },
@@ -788,14 +824,29 @@
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     const targetTab = this.getAttribute('data-tab');
+                    const targetTargetTab = this.getAttribute('data-target-tab');
                     
-                    // Remove active class from all tabs and contents
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(content => content.classList.remove('active'));
+                    if (targetTab) {
+                        // Remove active class from all tabs and contents
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tabContents.forEach(content => content.classList.remove('active'));
+                        
+                        // Add active class to clicked tab and corresponding content
+                        this.classList.add('active');
+                        document.getElementById(targetTab + '-tab').classList.add('active');
+                    }
                     
-                    // Add active class to clicked tab and corresponding content
-                    this.classList.add('active');
-                    document.getElementById(targetTab + '-tab').classList.add('active');
+                    if (targetTargetTab) {
+                        // Handle target tab switching
+                        const targetTabs = document.querySelectorAll('[data-target-tab]');
+                        const targetTabContents = document.querySelectorAll('#required-target-tab, #optional-target-tab');
+                        
+                        targetTabs.forEach(t => t.classList.remove('active'));
+                        targetTabContents.forEach(content => content.classList.remove('active'));
+                        
+                        this.classList.add('active');
+                        document.getElementById(targetTargetTab + '-target-tab').classList.add('active');
+                    }
                 });
             });
 
@@ -1045,26 +1096,23 @@
         }
 
         function generateTargetTable(targetDate) {
-            const tbody = document.getElementById('targetBody');
-            tbody.innerHTML = '';
+            const tbodyRequired = document.getElementById('targetBodyRequired');
+            const tbodyOptional = document.getElementById('targetBodyOptional');
+            tbodyRequired.innerHTML = '';
+            tbodyOptional.innerHTML = '';
 
-            // Combine all vaccines
-            const allVaccines = [
-                ...vaccineSchedule.required.map(v => ({...v, type: 'Bắt buộc', typeClass: 'badge-required'})),
-                ...vaccineSchedule.optional.map(v => ({...v, type: 'Tự nguyện', typeClass: 'badge-optional'}))
-            ];
-
-            // Sort by age
-            allVaccines.sort((a, b) => a.age - b.age);
-
-            allVaccines.forEach(vaccine => {
-                // Calculate suitable birth date range
-                const minBirthDate = new Date(targetDate);
-                const maxBirthDate = new Date(targetDate);
+            // Generate required vaccines table
+            vaccineSchedule.targetRequired.forEach(vaccine => {
+                // Calculate suitable birth date range for correct schedule
+                const correctScheduleEndDate = new Date(targetDate);
+                correctScheduleEndDate.setDate(correctScheduleEndDate.getDate() - vaccine.age);
                 
-                // Allow ±30 days window for vaccination
-                minBirthDate.setDate(minBirthDate.getDate() - vaccine.age - 30);
-                maxBirthDate.setDate(maxBirthDate.getDate() - vaccine.age + 30);
+                const correctScheduleStartDate = new Date(correctScheduleEndDate);
+                correctScheduleStartDate.setDate(correctScheduleStartDate.getDate() - 30);
+
+                // Calculate catch-up vaccination birth date range
+                const catchUpEndDate = new Date(correctScheduleEndDate);
+                const catchUpStartDate = new Date(targetDate.getFullYear(), 0, 1); // January 1st of the target year
 
                 const row = document.createElement('tr');
                 row.classList.add('suitable-row');
@@ -1072,37 +1120,51 @@
                 row.innerHTML = `
                     <td>
                         ${vaccine.name}
-                        <span class="vaccine-badge ${vaccine.typeClass}">${vaccine.type}</span>
                         <div class="vaccine-info">${vaccine.description}</div>
                     </td>
                     <td class="age-range">${vaccine.ageText}</td>
                     <td class="status-suitable">
-                        ${minBirthDate.toLocaleDateString('vi-VN')} đến ${maxBirthDate.toLocaleDateString('vi-VN')}
+                        ${correctScheduleStartDate.toLocaleDateString('vi-VN')} đến ${correctScheduleEndDate.toLocaleDateString('vi-VN')}
                     </td>
-                    <td>
-                        <span class="vaccine-badge ${vaccine.typeClass}">${vaccine.type}</span>
+                    <td class="status-suitable">
+                        ${catchUpStartDate.toLocaleDateString('vi-VN')} đến ${catchUpEndDate.toLocaleDateString('vi-VN')}
                     </td>
                 `;
                 
-                tbody.appendChild(row);
+                tbodyRequired.appendChild(row);
             });
 
-            // Add adult vaccines
-            vaccineSchedule.adult.forEach(vaccine => {
+            // Generate optional vaccines table
+            vaccineSchedule.optional.forEach(vaccine => {
+                // Calculate suitable birth date range for correct schedule
+                const correctScheduleEndDate = new Date(targetDate);
+                correctScheduleEndDate.setDate(correctScheduleEndDate.getDate() - vaccine.age);
+                
+                const correctScheduleStartDate = new Date(correctScheduleEndDate);
+                correctScheduleStartDate.setDate(correctScheduleStartDate.getDate() - 30);
+
+                // Calculate catch-up vaccination birth date range
+                const catchUpEndDate = new Date(correctScheduleEndDate);
+                const catchUpStartDate = new Date(targetDate.getFullYear(), 0, 1); // January 1st of the target year
+
                 const row = document.createElement('tr');
+                row.classList.add('suitable-row');
+
                 row.innerHTML = `
                     <td>
-                        ${vaccine.name} (Người lớn)
-                        <span class="vaccine-badge badge-optional">Khuyến nghị</span>
+                        ${vaccine.name}
                         <div class="vaccine-info">${vaccine.description}</div>
                     </td>
-                    <td class="age-range">${vaccine.ageRange}</td>
-                    <td class="status-suitable">Phù hợp theo độ tuổi</td>
-                    <td>
-                        <span class="vaccine-badge badge-optional">Khuyến nghị</span>
+                    <td class="age-range">${vaccine.ageText}</td>
+                    <td class="status-suitable">
+                        ${correctScheduleStartDate.toLocaleDateString('vi-VN')} đến ${correctScheduleEndDate.toLocaleDateString('vi-VN')}
+                    </td>
+                    <td class="status-suitable">
+                        ${catchUpStartDate.toLocaleDateString('vi-VN')} đến ${catchUpEndDate.toLocaleDateString('vi-VN')}
                     </td>
                 `;
-                tbody.appendChild(row);
+                
+                tbodyOptional.appendChild(row);
             });
         }
     </script>
