@@ -588,7 +588,7 @@
                             <input type="checkbox" name="adultVaccines" value="hepatitisA"> Viêm gan A
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm gan A.Tiêm 2 liều cách nhau 6-12 tháng.</span>
+                                <span class="tooltiptext">Phòng viêm gan A. Tiêm 2 liều cách nhau 6-12 tháng.</span>
                             </div>
                         </label>
                     </div>
@@ -747,7 +747,6 @@
                 { name: "Td (mũi 1)", age: 4380, ageText: "12 tuổi", description: "Phòng uốn ván, bạch hầu", interval: null },
                 { name: "Td (mũi 2)", age: 5475, ageText: "15 tuổi", description: "Phòng uốn ván, bạch hầu", interval: 1095 }
             ],
-            // Danh sách vaccine bắt buộc cho tab xác định đối tượng
             targetRequired: [
                 { name: "DPT 1", age: 60, ageText: "2 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
                 { name: "DPT 2", age: 90, ageText: "3 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
@@ -781,16 +780,16 @@
                 { name: "Thương hàn", age: 730, ageText: "2 tuổi trở lên", description: "Phòng bệnh thương hàn" }
             ],
             adult: [
-                { name: "Cúm", ageRange: "18+ tuổi", description: "Tiêm hàng năm" },
-                { name: "Tdap", ageRange: "18+ tuổi", description: "Tiêm nhắc mỗi 10 năm" },
-                { name: "HPV", ageRange: "18-26 tuổi", description: "Nếu chưa tiêm đủ liều" },
-                { name: "MMR", ageRange: "18+ tuổi", description: "Nếu sinh sau 1957 và chưa tiêm" },
-                { name: "Viêm gan A", ageRange: "18+ tuổi", description: "2 liều cách nhau 6-12 tháng" },
-                { name: "Viêm gan B", ageRange: "18+ tuổi", description: "3 liều theo lịch 0-1-6 tháng" },
-                { name: "Phế cầu", ageRange: "65+ tuổi", description: "Hoặc có bệnh nền" },
-                { name: "Zona", ageRange: "50+ tuổi", description: "2 liều cách nhau 2-6 tháng" },
-                { name: "COVID-19", ageRange: "18+ tuổi", description: "Theo khuyến cáo mới nhất" },
-                { name: "Não mô cầu", ageRange: "18+ tuổi", description: "Đối tượng nguy cơ cao" }
+                { name: "Cúm", value: "influenza", ageRange: "18+ tuổi", description: "Tiêm hàng năm", minAgeDays: 6570, maxAgeDays: Infinity },
+                { name: "Uốn ván-Bạch hầu-Ho gà (Tdap)", value: "tdap", ageRange: "18+ tuổi", description: "Tiêm nhắc mỗi 10 năm", minAgeDays: 6570, maxAgeDays: Infinity },
+                { name: "HPV", value: "hpv", ageRange: "18-26 tuổi", description: "Nếu chưa tiêm đủ liều", minAgeDays: 6570, maxAgeDays: 9490 },
+                { name: "Sởi-Quai bị-Rubella (MMR)", value: "mmr", ageRange: "18+ tuổi", description: "Nếu sinh sau 1957 và chưa tiêm", minAgeDays: 6570, maxAgeDays: Infinity },
+                { name: "Viêm gan A", value: "hepatitisA", ageRange: "18+ tuổi", description: "2 liều cách nhau 6-12 tháng", minAgeDays: 6570, maxAgeDays: Infinity },
+                { name: "Viêm gan B", value: "hepatitisB", ageRange: "18+ tuổi", description: "3 liều theo lịch 0-1-6 tháng", minAgeDays: 6570, maxAgeDays: Infinity },
+                { name: "Phế cầu", value: "pneumococcal", ageRange: "65+ tuổi", description: "Hoặc có bệnh nền", minAgeDays: 23725, maxAgeDays: Infinity },
+                { name: "Zona (Shingles)", value: "shingles", ageRange: "50+ tuổi", description: "2 liều cách nhau 2-6 tháng", minAgeDays: 18250, maxAgeDays: Infinity },
+                { name: "COVID-19", value: "covid19", ageRange: "18+ tuổi", description: "Theo khuyến cáo mới nhất", minAgeDays: 6570, maxAgeDays: Infinity },
+                { name: "Não mô cầu", value: "meningococcal", ageRange: "18+ tuổi", description: "Đối tượng nguy cơ cao", minAgeDays: 6570, maxAgeDays: Infinity }
             ]
         };
 
@@ -931,7 +930,6 @@
             const vaccineDiv = document.querySelector(`[data-id="${id}"]`);
             if (vaccineDiv) {
                 vaccineDiv.remove();
-                // Remove from previousVaccines array
                 previousVaccines = previousVaccines.filter(v => v.id !== id);
             }
         }
@@ -943,13 +941,24 @@
         }
 
         function calculateSchedule() {
-            const birthdate = document.getElementById('birthdate').value;
-            if (!birthdate) {
-                alert('Vui lòng nhập ngày sinh của bé');
-                return;
+            const activeTab = document.querySelector('.tabs .tab.active').getAttribute('data-tab');
+            let birth;
+            if (activeTab === 'adult') {
+                const adultBirthdate = document.getElementById('adultBirthdate').value;
+                if (!adultBirthdate) {
+                    alert('Vui lòng nhập ngày sinh');
+                    return;
+                }
+                birth = new Date(adultBirthdate);
+            } else {
+                const birthdate = document.getElementById('birthdate').value;
+                if (!birthdate) {
+                    alert('Vui lòng nhập ngày sinh của bé');
+                    return;
+                }
+                birth = new Date(birthdate);
             }
 
-            const birth = new Date(birthdate);
             const today = new Date();
             const ageInDays = Math.floor((today - birth) / (1000 * 60 * 60 * 24));
 
@@ -985,39 +994,45 @@
             });
 
             // Generate schedule
-            let allVaccines = [...vaccineSchedule.required];
-
-            // Add optional vaccines based on selection
-            if (selectedOptional.includes('pneumococcal')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Phế cầu')));
-            }
-            if (selectedOptional.includes('chickenpox')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Thủy đậu')));
-            }
-            if (selectedOptional.includes('influenza')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name === 'Cúm'));
-            }
-            if (selectedOptional.includes('mmr')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('MMR')));
-            }
-            if (selectedOptional.includes('hpv')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('HPV')));
-            }
-            if (selectedOptional.includes('hepatitisA')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Viêm gan A')));
-            }
-            if (selectedOptional.includes('meningococcal')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Não mô cầu')));
-            }
-            if (selectedOptional.includes('typhoid')) {
-                allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Thương hàn')));
+            let allVaccines;
+            if (activeTab === 'adult') {
+                allVaccines = vaccineSchedule.adult.filter(v => selectedAdult.includes(v.value));
+            } else {
+                allVaccines = [...vaccineSchedule.required];
+                if (selectedOptional.includes('pneumococcal')) {
+                    allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Phế cầu')));
+                }
+                if (selectedOptional.includes('chickenpox')) {
+                    allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Thủy đậu')));
+                }
+                if (selectedOptional.includes('influenza')) {
+                    allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name === 'Cúm'));
+                }
+                if (selectedOptional.includes('mmr')) {
+                    allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('MMR')));
+                }
+                if (selectedOptional.includes('hpv')) {
+                    allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('HPV')));
+                }
+                if (selectedOptional.includes('hepatitisA')) {
+                    allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Viêm gan A')));
+                }
+                if (selectedOptional.includes('meningococcal')) {
+                    allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Não mô cầu')));
+                }
+                if (selectedOptional.includes('typhoid')) {
+                    allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Thương hàn')));
+                }
+                if (selectedOptional.includes('rabies')) {
+                    allVaccines = allVaccines.concat(vaccineSchedule.optional.filter(v => v.name.includes('Dại')));
+                }
             }
 
             // Sort vaccines by age
-            allVaccines.sort((a, b) => a.age - b.age);
+            allVaccines.sort((a, b) => (a.age || a.minAgeDays || 0) - (b.age || b.minAgeDays || 0));
 
             // Generate table
-            generateScheduleTable(allVaccines, birth, ageInDays);
+            generateScheduleTable(allVaccines, birth, ageInDays, activeTab === 'adult');
 
             // Show results
             document.getElementById('results').style.display = 'block';
@@ -1026,47 +1041,80 @@
             const parentName = document.getElementById('parentName').value || 'Chưa nhập';
             const contactInfo = document.getElementById('contactInfo').value || 'Chưa nhập';
             document.getElementById('childInfo').innerHTML = `
-                <strong>Thông tin:</strong> Phụ huynh: ${parentName} | Liên hệ: ${contactInfo} | Ngày sinh bé: ${birth.toLocaleDateString('vi-VN')} | Tuổi hiện tại: ${Math.floor(ageInDays/30)} tháng ${ageInDays%30} ngày
+                <strong>Thông tin:</strong> Phụ huynh: ${parentName} | Liên hệ: ${contactInfo} | Ngày sinh: ${birth.toLocaleDateString('vi-VN')} | Tuổi hiện tại: ${Math.floor(ageInDays/365)} tuổi ${Math.floor((ageInDays%365)/30)} tháng ${ageInDays%30} ngày
             `;
         }
 
-        function generateScheduleTable(vaccines, birth, currentAge) {
+        function generateScheduleTable(vaccines, birth, currentAge, isAdult) {
             const tbody = document.getElementById('scheduleBody');
             tbody.innerHTML = '';
+            const today = new Date();
 
             vaccines.forEach(vaccine => {
-                const vaccineDate = new Date(birth);
-                vaccineDate.setDate(vaccineDate.getDate() + vaccine.age);
-                
                 const row = document.createElement('tr');
                 
                 let status = '';
                 let statusClass = '';
-                
-                if (vaccine.age <= currentAge - 7) { // Quá hạn 1 tuần
-                    status = 'Cần tiêm gấp';
-                    statusClass = 'status-due';
-                    row.classList.add('due');
-                } else if (vaccine.age <= currentAge + 30) { // Trong vòng 1 tháng
-                    status = 'Sắp đến lịch';
-                    statusClass = 'status-coming';
-                    row.classList.add('coming');
-                } else if (isVaccineCompleted(vaccine)) {
+                let ageText = '';
+                let vaccineDateStr = '';
+                let complete = isVaccineCompleted(vaccine);
+
+                if (complete) {
                     status = 'Đã tiêm';
                     statusClass = 'status-complete';
                     row.classList.add('complete');
+                    ageText = vaccine.ageText || vaccine.ageRange;
+                    vaccineDateStr = 'N/A';
+                } else if (isAdult) {
+                    ageText = vaccine.ageRange;
+                    const minAge = vaccine.minAgeDays;
+                    const maxAge = vaccine.maxAgeDays;
+                    if (currentAge < minAge) {
+                        const daysToMin = minAge - currentAge;
+                        const vaccineDate = new Date(today);
+                        vaccineDate.setDate(vaccineDate.getDate() + daysToMin);
+                        vaccineDateStr = vaccineDate.toLocaleDateString('vi-VN');
+                        status = 'Chưa đủ tuổi';
+                        statusClass = '';
+                        row.classList.add('coming');
+                    } else if (maxAge !== Infinity && currentAge > maxAge) {
+                        vaccineDateStr = 'N/A';
+                        status = 'Quá tuổi';
+                        statusClass = 'status-due';
+                        row.classList.add('due');
+                    } else {
+                        vaccineDateStr = 'Bất kỳ lúc nào';
+                        status = 'Phù hợp tiêm';
+                        statusClass = 'status-complete';
+                        row.classList.add('complete');
+                    }
                 } else {
-                    status = 'Chưa đến lịch';
-                    statusClass = '';
+                    ageText = vaccine.ageText;
+                    const vaccineDate = new Date(birth);
+                    vaccineDate.setDate(vaccineDate.getDate() + vaccine.age);
+                    vaccineDateStr = vaccineDate.toLocaleDateString('vi-VN');
+                    
+                    if (vaccine.age <= currentAge - 7) {
+                        status = 'Cần tiêm gấp';
+                        statusClass = 'status-due';
+                        row.classList.add('due');
+                    } else if (vaccine.age <= currentAge + 30) {
+                        status = 'Sắp đến lịch';
+                        statusClass = 'status-coming';
+                        row.classList.add('coming');
+                    } else {
+                        status = 'Chưa đến lịch';
+                        statusClass = '';
+                    }
                 }
 
                 row.innerHTML = `
-                    <td><strong>${vaccine.ageText}</strong></td>
+                    <td><strong>${ageText}</strong></td>
                     <td>
                         ${vaccine.name}
                         <div class="vaccine-info">${vaccine.description}</div>
                     </td>
-                    <td class="vaccine-date">${vaccineDate.toLocaleDateString('vi-VN')}</td>
+                    <td class="vaccine-date">${vaccineDateStr}</td>
                     <td class="${statusClass}">${status}</td>
                 `;
                 
@@ -1075,9 +1123,8 @@
         }
 
         function isVaccineCompleted(vaccine) {
-            // Check if this vaccine was already given
             return previousVaccines.some(pv => {
-                const vaccineName = vaccine.name.split(' (')[0]; // Remove dose info
+                const vaccineName = vaccine.name.split(' (')[0];
                 const previousName = pv.name;
                 return previousName.includes(vaccineName) || vaccineName.includes(previousName);
             });
@@ -1103,16 +1150,14 @@
 
             // Generate required vaccines table
             vaccineSchedule.targetRequired.forEach(vaccine => {
-                // Calculate suitable birth date range for correct schedule
                 const correctScheduleEndDate = new Date(targetDate);
                 correctScheduleEndDate.setDate(correctScheduleEndDate.getDate() - vaccine.age);
                 
                 const correctScheduleStartDate = new Date(correctScheduleEndDate);
                 correctScheduleStartDate.setDate(correctScheduleStartDate.getDate() - 30);
 
-                // Calculate catch-up vaccination birth date range
                 const catchUpEndDate = new Date(correctScheduleEndDate);
-                const catchUpStartDate = new Date(targetDate.getFullYear(), 0, 1); // January 1st of the target year
+                const catchUpStartDate = new Date(targetDate.getFullYear(), 0, 1);
 
                 const row = document.createElement('tr');
                 row.classList.add('suitable-row');
@@ -1136,16 +1181,14 @@
 
             // Generate optional vaccines table
             vaccineSchedule.optional.forEach(vaccine => {
-                // Calculate suitable birth date range for correct schedule
                 const correctScheduleEndDate = new Date(targetDate);
                 correctScheduleEndDate.setDate(correctScheduleEndDate.getDate() - vaccine.age);
                 
                 const correctScheduleStartDate = new Date(correctScheduleEndDate);
                 correctScheduleStartDate.setDate(correctScheduleStartDate.getDate() - 30);
 
-                // Calculate catch-up vaccination birth date range
                 const catchUpEndDate = new Date(correctScheduleEndDate);
-                const catchUpStartDate = new Date(targetDate.getFullYear(), 0, 1); // January 1st of the target year
+                const catchUpStartDate = new Date(targetDate.getFullYear(), 0, 1);
 
                 const row = document.createElement('tr');
                 row.classList.add('suitable-row');
