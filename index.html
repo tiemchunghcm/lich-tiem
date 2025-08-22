@@ -746,39 +746,37 @@
                 { name: "Td", age: 2555, ageText: "7 tuổi", description: "Phòng uốn ván, bạch hầu", interval: null }
             ],
             targetRequired: [
-                { name: "DPT 1", age: 60, ageText: "2 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
-                { name: "DPT 2", age: 90, ageText: "3 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
-                { name: "DPT 3", age: 120, ageText: "4 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
-                { name: "OPV 1", age: 60, ageText: "2 tháng", description: "Phòng bệnh bại liệt (uống)" },
-                { name: "OPV 2", age: 90, ageText: "3 tháng", description: "Phòng bệnh bại liệt (uống)" },
-                { name: "OPV 3", age: 120, ageText: "4 tháng", description: "Phòng bệnh bại liệt (uống)" },
-                { name: "IPV 1", age: 150, ageText: "5 tháng", description: "Phòng bệnh bại liệt (tiêm)" },
-                { name: "IPV 2", age: 270, ageText: "9 tháng", description: "Phòng bệnh bại liệt (tiêm)" },
-                { name: "Sởi 1", age: 270, ageText: "9 tháng", description: "Phòng bệnh sởi" },
-                { name: "Sởi 2", age: 540, ageText: "18 tháng", description: "Phòng bệnh sởi" },
-                { name: "DPT 4", age: 540, ageText: "18 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
-                { name: "VNNB 1", age: 365, ageText: "12 tháng", description: "Phòng viêm não Nhật Bản" },
-                { name: "VNNB 2", age: 380, ageText: "Sau VNNB 1 từ 1-2 tuần", description: "Phòng viêm não Nhật Bản" },
-                { name: "VNNB 3", age: 730, ageText: "24 tháng", description: "Phòng viêm não Nhật Bản" },
-                { name: "Td", age: 2555, ageText: "7 tuổi", description: "Phòng uốn ván, bạch hầu" }
+                { name: "DPT 1", age_months: 2, catchUpOffset: -1, ageText: "2 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
+                { name: "DPT 2", age_months: 3, catchUpOffset: -1, ageText: "3 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
+                { name: "DPT 3", age_months: 4, catchUpOffset: -1, ageText: "4 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
+                { name: "IPV 1", age_months: 5, catchUpOffset: -1, ageText: "5 tháng", description: "Phòng bệnh bại liệt (tiêm)" },
+                { name: "IPV 2", age_months: 9, catchUpOffset: -1, ageText: "9 tháng", description: "Phòng bệnh bại liệt (tiêm)" },
+                { name: "Sởi 1", age_months: 9, catchUpOffset: -1, ageText: "9 tháng", description: "Phòng bệnh sởi" },
+                { name: "Sởi 2", age_months: 18, catchUpOffset: -2, ageText: "18 tháng", description: "Phòng bệnh sởi" },
+                { name: "DPT 4", age_months: 18, catchUpOffset: -2, ageText: "18 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
+                { name: "VNNB 1", age_months: 12, catchUpOffset: -3, ageText: "12 tháng", description: "Phòng viêm não Nhật Bản" },
+                { name: "VNNB 2", age_months: 12, catchUpOffset: -3, ageText: "Sau VNNB 1 từ 1-2 tuần", description: "Phòng viêm não Nhật Bản" },
+                { name: "VNNB 3", age_months: 24, catchUpOffset: -3, ageText: "24 tháng", description: "Phòng viêm não Nhật Bản" },
+                { name: "VNNB 3-5 tuổi", age_months: 36, catchUpOffset: -5, ageText: "3-5 tuổi", description: "Phòng viêm não Nhật Bản" },
+                { name: "Td", age_months: 84, catchUpOffset: -7, ageText: "7 tuổi", description: "Phòng uốn ván, bạch hầu" }
             ],
             optional: [
-                { name: "Phế cầu (mũi 1)", age: 60, ageText: "2 tháng", description: "Phòng viêm phổi, viêm màng não mủ" },
-                { name: "Phế cầu (mũi 2)", age: 120, ageText: "4 tháng", description: "Phòng viêm phổi, viêm màng não mủ" },
-                { name: "Phế cầu (mũi 3)", age: 180, ageText: "6 tháng", description: "Phòng viêm phổi, viêm màng não mủ" },
-                { name: "Phế cầu (mũi nhắc)", age: 365, ageText: "12-15 tháng", description: "Phòng viêm phổi, viêm màng não mủ" },
-                { name: "Thủy đậu (mũi 1)", age: 365, ageText: "12-15 tháng", description: "Phòng bệnh thủy đậu" },
-                { name: "Thủy đậu (mũi 2)", age: 455, ageText: "15-18 tháng", description: "Phòng bệnh thủy đậu" },
-                { name: "Cúm", age: 180, ageText: "6 tháng trở lên", description: "Phòng bệnh cúm mùa (hàng năm)" },
-                { name: "MMR (mũi 1)", age: 365, ageText: "12 tháng", description: "Phòng sởi, quai bị, rubella" },
-                { name: "MMR (mũi 2)", age: 455, ageText: "15-18 tháng", description: "Phòng sởi, quai bị, rubella" },
-                { name: "HPV (mũi 1)", age: 3285, ageText: "9-14 tuổi", description: "Phòng ung thư cổ tử cung" },
-                { name: "HPV (mũi 2)", age: 3345, ageText: "2 tháng sau mũi 1", description: "Phòng ung thư cổ tử cung" },
-                { name: "HPV (mũi 3)", age: 3465, ageText: "6 tháng sau mũi 1", description: "Phòng ung thư cổ tử cung" },
-                { name: "Viêm gan A (mũi 1)", age: 365, ageText: "12 tháng trở lên", description: "Phòng viêm gan A" },
-                { name: "Viêm gan A (mũi 2)", age: 545, ageText: "6-12 tháng sau mũi 1", description: "Phòng viêm gan A" },
-                { name: "Não mô cầu", age: 270, ageText: "9 tháng trở lên", description: "Phòng viêm màng não do não mô cầu" },
-                { name: "Thương hàn", age: 730, ageText: "2 tuổi trở lên", description: "Phòng bệnh thương hàn" }
+                { name: "Phế cầu (mũi 1)", age: 60, ageText: "2 tháng", description: "Phòng viêm phổi, viêm màng não mủ", age_months: 2, catchUpOffset: -1 },
+                { name: "Phế cầu (mũi 2)", age: 120, ageText: "4 tháng", description: "Phòng viêm phổi, viêm màng não mủ", age_months: 4, catchUpOffset: -1 },
+                { name: "Phế cầu (mũi 3)", age: 180, ageText: "6 tháng", description: "Phòng viêm phổi, viêm màng não mủ", age_months: 6, catchUpOffset: -1 },
+                { name: "Phế cầu (mũi nhắc)", age: 365, ageText: "12-15 tháng", description: "Phòng viêm phổi, viêm màng não mủ", age_months: 12, catchUpOffset: -3 },
+                { name: "Thủy đậu (mũi 1)", age: 365, ageText: "12-15 tháng", description: "Phòng bệnh thủy đậu", age_months: 12, catchUpOffset: -3 },
+                { name: "Thủy đậu (mũi 2)", age: 455, ageText: "15-18 tháng", description: "Phòng bệnh thủy đậu", age_months: 15, catchUpOffset: -2 },
+                { name: "Cúm", age: 180, ageText: "6 tháng trở lên", description: "Phòng bệnh cúm mùa (hàng năm)", age_months: 6, catchUpOffset: -1 },
+                { name: "MMR (mũi 1)", age: 365, ageText: "12 tháng", description: "Phòng sởi, quai bị, rubella", age_months: 12, catchUpOffset: -3 },
+                { name: "MMR (mũi 2)", age: 455, ageText: "15-18 tháng", description: "Phòng sởi, quai bị, rubella", age_months: 15, catchUpOffset: -2 },
+                { name: "HPV (mũi 1)", age: 3285, ageText: "9-14 tuổi", description: "Phòng ung thư cổ tử cung", age_months: 108, catchUpOffset: -9 },
+                { name: "HPV (mũi 2)", age: 3345, ageText: "2 tháng sau mũi 1", description: "Phòng ung thư cổ tử cung", age_months: 111, catchUpOffset: -9 },
+                { name: "HPV (mũi 3)", age: 3465, ageText: "6 tháng sau mũi 1", description: "Phòng ung thư cổ tử cung", age_months: 115, catchUpOffset: -9 },
+                { name: "Viêm gan A (mũi 1)", age: 365, ageText: "12 tháng trở lên", description: "Phòng viêm gan A", age_months: 12, catchUpOffset: -3 },
+                { name: "Viêm gan A (mũi 2)", age: 545, ageText: "6-12 tháng sau mũi 1", description: "Phòng viêm gan A", age_months: 18, catchUpOffset: -2 },
+                { name: "Não mô cầu", age: 270, ageText: "9 tháng trở lên", description: "Phòng viêm màng não do não mô cầu", age_months: 9, catchUpOffset: -1 },
+                { name: "Thương hàn", age: 730, ageText: "2 tuổi trở lên", description: "Phòng bệnh thương hàn", age_months: 24, catchUpOffset: -3 }
             ],
             adult: [
                 { name: "Cúm", value: "influenza", ageRange: "18+ tuổi", description: "Tiêm hàng năm", minAgeDays: 6570, maxAgeDays: Infinity },
@@ -1143,6 +1141,13 @@
             document.getElementById('targetResults').style.display = 'block';
         }
 
+        function subtractMonths(date, months) {
+            const newDate = new Date(date);
+            newDate.setMonth(newDate.getMonth() - months);
+            newDate.setDate(21);
+            return newDate;
+        }
+
         function generateTargetTable(targetDate) {
             const tbodyRequired = document.getElementById('targetBodyRequired');
             const tbodyOptional = document.getElementById('targetBodyOptional');
@@ -1151,14 +1156,11 @@
 
             // Generate required vaccines table
             vaccineSchedule.targetRequired.forEach(vaccine => {
-                const correctScheduleEndDate = new Date(targetDate);
-                correctScheduleEndDate.setDate(correctScheduleEndDate.getDate() - vaccine.age);
-                
-                const correctScheduleStartDate = new Date(correctScheduleEndDate);
-                correctScheduleStartDate.setDate(correctScheduleStartDate.getDate() - 30);
+                const correctScheduleEndDate = subtractMonths(targetDate, vaccine.age_months);
+                const correctScheduleStartDate = subtractMonths(targetDate, vaccine.age_months + 1);
 
                 const catchUpEndDate = new Date(correctScheduleEndDate);
-                const catchUpStartDate = new Date(targetDate.getFullYear(), 0, 1);
+                const catchUpStartDate = new Date(targetDate.getFullYear() + vaccine.catchUpOffset, 0, 1);
 
                 const row = document.createElement('tr');
                 row.classList.add('suitable-row');
@@ -1182,14 +1184,11 @@
 
             // Generate optional vaccines table
             vaccineSchedule.optional.forEach(vaccine => {
-                const correctScheduleEndDate = new Date(targetDate);
-                correctScheduleEndDate.setDate(correctScheduleEndDate.getDate() - vaccine.age);
-                
-                const correctScheduleStartDate = new Date(correctScheduleEndDate);
-                correctScheduleStartDate.setDate(correctScheduleStartDate.getDate() - 30);
+                const correctScheduleEndDate = subtractMonths(targetDate, vaccine.age_months);
+                const correctScheduleStartDate = subtractMonths(targetDate, vaccine.age_months + 1);
 
                 const catchUpEndDate = new Date(correctScheduleEndDate);
-                const catchUpStartDate = new Date(targetDate.getFullYear(), 0, 1);
+                const catchUpStartDate = new Date(targetDate.getFullYear() + vaccine.catchUpOffset, 0, 1);
 
                 const row = document.createElement('tr');
                 row.classList.add('suitable-row');
