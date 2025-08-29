@@ -356,6 +356,24 @@
         .suitable-row {
             background-color: #f0fff4;
         }
+        #vaccineInfoResults {
+            margin-top: 35px;
+            display: none;
+        }
+        .vaccine-detail {
+            background-color: #fcf9ff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(201, 171, 218, 0.15);
+        }
+        .vaccine-detail p {
+            margin: 10px 0;
+            border-bottom: 1px solid #f0e5f5;
+            padding-bottom: 10px;
+        }
+        .vaccine-detail strong {
+            color: #7c668d;
+        }
         @media (max-width: 768px) {
             .checkbox-item {
                 flex-basis: 100%;
@@ -379,6 +397,7 @@
         <div class="main-tabs">
             <div class="main-tab active" data-main-tab="schedule">📅 Lịch tiêm chủng cho bé</div>
             <div class="main-tab" data-main-tab="target">🎯 Xác định đối tượng tiêm</div>
+            <div class="main-tab" data-main-tab="vaccineInfo">🔍 Tra cứu thông tin vắc xin</div>
         </div>
         
         <!-- Tab 1: Lịch tiêm chủng cho bé -->
@@ -717,6 +736,39 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Tab 3: Tra cứu thông tin vắc xin -->
+        <div class="main-tab-content" id="vaccineInfo-main-tab">
+            <h2>🔍 Tra cứu thông tin vắc xin</h2>
+            
+            <div class="form-group">
+                <label for="vaccineSelect">Chọn vắc xin:</label>
+                <select id="vaccineSelect">
+                    <option value="">-- Chọn vắc xin --</option>
+                    <option value="bcg">BCG (Phòng lao)</option>
+                    <option value="engerixb">Engerix B (Viêm gan B)</option>
+                    <option value="pentaxim">Pentaxim (5 trong 1)</option>
+                    <option value="ipv">Imovax Polio (IPV - Bại liệt)</option>
+                    <option value="mvvac">MVVAC (Sởi)</option>
+                    <option value="mrvac">MRVAC (Sởi - Rubella)</option>
+                    <option value="jevax">Jevax (Viêm não Nhật Bản)</option>
+                    <option value="adacel">Adacel (Tdap)</option>
+                    <option value="prevenar13">Prevenar 13 (Phế cầu)</option>
+                    <option value="varivax">Varivax (Thủy đậu)</option>
+                    <option value="vaxigrip">Vaxigrip Tetra (Cúm)</option>
+                    <option value="priorix">Priorix (MMR)</option>
+                    <option value="gardasil">Gardasil (HPV)</option>
+                    <option value="havrix">Havrix (Viêm gan A)</option>
+                    <option value="menactra">Menactra (Não mô cầu)</option>
+                    <option value="typhimvi">Typhim Vi (Thương hàn)</option>
+                    <option value="verorab">Verorab (Dại)</option>
+                </select>
+            </div>
+            
+            <div id="vaccineInfoResults">
+                <div id="vaccineDetail" class="vaccine-detail"></div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -789,6 +841,214 @@
             ]
         };
 
+        // Dữ liệu thông tin vắc xin từ VNVC (dựa trên kiến thức cập nhật)
+        const vaccineInfoData = {
+            bcg: {
+                type: "Phòng lao",
+                name: "BCG",
+                nature: "Sống giảm độc lực",
+                manufacturer: "Microgen, Nga",
+                target: "Trẻ em từ sơ sinh đến 1 tuổi, hoặc người lớn chưa tiêm",
+                contraindications: "Suy giảm miễn dịch nặng, HIV, dị ứng với thành phần",
+                dosage: "0.05 ml cho trẻ <1 tuổi, 0.1 ml cho >1 tuổi",
+                route: "Tiêm trong da",
+                doses: "1",
+                interval: "Không áp dụng"
+            },
+            engerixb: {
+                type: "Phòng viêm gan B",
+                name: "Engerix B",
+                nature: "Bất hoạt (recombinant)",
+                manufacturer: "GlaxoSmithKline, Bỉ",
+                target: "Tất cả độ tuổi, đặc biệt sơ sinh",
+                contraindications: "Dị ứng với men bia hoặc thành phần",
+                dosage: "0.5 ml cho trẻ <10 tuổi, 1 ml cho >=10 tuổi",
+                route: "Tiêm bắp",
+                doses: "3-4 tùy lịch",
+                interval: "0, 1, 6 tháng"
+            },
+            pentaxim: {
+                type: "Phòng bạch hầu, ho gà, uốn ván, bại liệt, Hib",
+                name: "Pentaxim",
+                nature: "Bất hoạt",
+                manufacturer: "Sanofi Pasteur, Pháp",
+                target: "Trẻ từ 2 tháng đến 24 tháng",
+                contraindications: "Dị ứng, bệnh não cấp",
+                dosage: "0.5 ml",
+                route: "Tiêm bắp",
+                doses: "3 cơ bản + 1 nhắc",
+                interval: "1 tháng giữa mũi 1-2-3, nhắc sau 1 năm"
+            },
+            ipv: {
+                type: "Phòng bại liệt",
+                name: "Imovax Polio",
+                nature: "Bất hoạt",
+                manufacturer: "Sanofi Pasteur, Pháp",
+                target: "Trẻ em và người lớn",
+                contraindications: "Dị ứng",
+                dosage: "0.5 ml",
+                route: "Tiêm bắp hoặc dưới da",
+                doses: "3-4",
+                interval: "1 tháng giữa mũi"
+            },
+            mvvac: {
+                type: "Phòng sởi",
+                name: "MVVAC",
+                nature: "Sống giảm độc lực",
+                manufacturer: "Polyvac, Việt Nam",
+                target: "Trẻ từ 9 tháng",
+                contraindications: "Suy giảm miễn dịch, mang thai",
+                dosage: "0.5 ml",
+                route: "Tiêm dưới da",
+                doses: "1-2",
+                interval: "Ít nhất 1 tháng nếu 2 mũi"
+            },
+            mrvac: {
+                type: "Phòng sởi, rubella",
+                name: "MRVAC",
+                nature: "Sống giảm độc lực",
+                manufacturer: "Polyvac, Việt Nam",
+                target: "Trẻ từ 18 tháng, phụ nữ tuổi sinh đẻ",
+                contraindications: "Mang thai, suy miễn dịch",
+                dosage: "0.5 ml",
+                route: "Tiêm dưới da",
+                doses: "1",
+                interval: "Không áp dụng"
+            },
+            jevax: {
+                type: "Phòng viêm não Nhật Bản",
+                name: "Jevax",
+                nature: "Bất hoạt",
+                manufacturer: "Vabiotech, Việt Nam",
+                target: "Trẻ từ 12 tháng, người lớn",
+                contraindications: "Dị ứng",
+                dosage: "0.5 ml",
+                route: "Tiêm dưới da",
+                doses: "3",
+                interval: "Mũi 2 sau 1-2 tuần, mũi 3 sau 1 năm"
+            },
+            adacel: {
+                type: "Phòng uốn ván, bạch hầu, ho gà",
+                name: "Adacel",
+                nature: "Bất hoạt",
+                manufacturer: "Sanofi Pasteur, Canada",
+                target: "Trẻ từ 4 tuổi, người lớn",
+                contraindications: "Bệnh não, dị ứng",
+                dosage: "0.5 ml",
+                route: "Tiêm bắp",
+                doses: "1 nhắc lại mỗi 10 năm",
+                interval: "10 năm"
+            },
+            prevenar13: {
+                type: "Phòng bệnh do phế cầu",
+                name: "Prevenar 13",
+                nature: "Liên hợp polysaccharide",
+                manufacturer: "Pfizer, Mỹ",
+                target: "Trẻ từ 6 tuần, người lớn",
+                contraindications: "Dị ứng",
+                dosage: "0.5 ml",
+                route: "Tiêm bắp",
+                doses: "3-4 tùy tuổi",
+                interval: "1-2 tháng giữa mũi cơ bản, nhắc sau 6 tháng"
+            },
+            varivax: {
+                type: "Phòng thủy đậu",
+                name: "Varivax",
+                nature: "Sống giảm độc lực",
+                manufacturer: "MSD, Mỹ",
+                target: "Trẻ từ 12 tháng, người lớn chưa miễn dịch",
+                contraindications: "Mang thai, suy miễn dịch",
+                dosage: "0.5 ml",
+                route: "Tiêm dưới da",
+                doses: "2",
+                interval: "3 tháng"
+            },
+            vaxigrip: {
+                type: "Phòng cúm",
+                name: "Vaxigrip Tetra",
+                nature: "Bất hoạt",
+                manufacturer: "Sanofi Pasteur, Pháp",
+                target: "Từ 6 tháng tuổi",
+                contraindications: "Dị ứng trứng gà nặng",
+                dosage: "0.5 ml, 0.25 ml cho trẻ nhỏ",
+                route: "Tiêm bắp",
+                doses: "1-2 hàng năm",
+                interval: "Hàng năm"
+            },
+            priorix: {
+                type: "Phòng sởi, quai bị, rubella",
+                name: "Priorix",
+                nature: "Sống giảm độc lực",
+                manufacturer: "GSK, Bỉ",
+                target: "Trẻ từ 9 tháng",
+                contraindications: "Mang thai, suy miễn dịch",
+                dosage: "0.5 ml",
+                route: "Tiêm dưới da",
+                doses: "2",
+                interval: "Ít nhất 1 tháng"
+            },
+            gardasil: {
+                type: "Phòng HPV (ung thư cổ tử cung, v.v.)",
+                name: "Gardasil",
+                nature: "Recombinant",
+                manufacturer: "MSD, Mỹ",
+                target: "Nữ và nam từ 9-26 tuổi",
+                contraindications: "Dị ứng, mang thai",
+                dosage: "0.5 ml",
+                route: "Tiêm bắp",
+                doses: "2-3 tùy tuổi",
+                interval: "0, 6 tháng cho 2 mũi; 0,2,6 cho 3 mũi"
+            },
+            havrix: {
+                type: "Phòng viêm gan A",
+                name: "Havrix",
+                nature: "Bất hoạt",
+                manufacturer: "GSK, Bỉ",
+                target: "Từ 12 tháng tuổi",
+                contraindications: "Dị ứng",
+                dosage: "0.5 ml cho trẻ, 1 ml cho người lớn",
+                route: "Tiêm bắp",
+                doses: "2",
+                interval: "6-12 tháng"
+            },
+            menactra: {
+                type: "Phòng viêm màng não do não mô cầu",
+                name: "Menactra",
+                nature: "Liên hợp",
+                manufacturer: "Sanofi Pasteur, Mỹ",
+                target: "Từ 9 tháng đến 55 tuổi",
+                contraindications: "Dị ứng",
+                dosage: "0.5 ml",
+                route: "Tiêm bắp",
+                doses: "1-2 tùy tuổi",
+                interval: "3 năm nếu cần nhắc"
+            },
+            typhimvi: {
+                type: "Phòng thương hàn",
+                name: "Typhim Vi",
+                nature: "Polysaccharide",
+                manufacturer: "Sanofi Pasteur, Pháp",
+                target: "Từ 2 tuổi",
+                contraindications: "Dị ứng",
+                dosage: "0.5 ml",
+                route: "Tiêm bắp hoặc dưới da",
+                doses: "1, nhắc mỗi 3 năm",
+                interval: "3 năm"
+            },
+            verorab: {
+                type: "Phòng dại",
+                name: "Verorab",
+                nature: "Bất hoạt",
+                manufacturer: "Sanofi Pasteur, Pháp",
+                target: "Người bị phơi nhiễm hoặc dự phòng",
+                contraindications: "Không có chống chỉ định tuyệt đối",
+                dosage: "0.5 ml",
+                route: "Tiêm bắp",
+                doses: "3-5 tùy phác đồ",
+                interval: "Ngày 0,7,21 hoặc 28"
+            }
+        };
+
         let previousVaccines = [];
         let vaccineCounter = 0;
 
@@ -812,7 +1072,7 @@
                 });
             });
 
-            // Sub tab switching
+            // Sub tab switching for schedule and target
             const tabs = document.querySelectorAll('.tab');
             const tabContents = document.querySelectorAll('.tab-content');
 
@@ -822,17 +1082,14 @@
                     const targetTargetTab = this.getAttribute('data-target-tab');
                     
                     if (targetTab) {
-                        // Remove active class from all tabs and contents
                         tabs.forEach(t => t.classList.remove('active'));
                         tabContents.forEach(content => content.classList.remove('active'));
                         
-                        // Add active class to clicked tab and corresponding content
                         this.classList.add('active');
                         document.getElementById(targetTab + '-tab').classList.add('active');
                     }
                     
                     if (targetTargetTab) {
-                        // Handle target tab switching
                         const targetTabs = document.querySelectorAll('[data-target-tab]');
                         const targetTabContents = document.querySelectorAll('#required-target-tab, #optional-target-tab');
                         
@@ -872,6 +1129,33 @@
 
             // Calculate target button
             document.getElementById('calculateTargetBtn').addEventListener('click', calculateTarget);
+
+            // Vaccine info select
+            const vaccineSelect = document.getElementById('vaccineSelect');
+            vaccineSelect.addEventListener('change', function() {
+                const selectedValue = this.value;
+                const resultsDiv = document.getElementById('vaccineInfoResults');
+                const detailDiv = document.getElementById('vaccineDetail');
+                
+                if (selectedValue) {
+                    const info = vaccineInfoData[selectedValue];
+                    detailDiv.innerHTML = `
+                        <p><strong>Loại vắc xin:</strong> ${info.type}</p>
+                        <p><strong>Tên vắc xin:</strong> ${info.name}</p>
+                        <p><strong>Tính chất:</strong> ${info.nature}</p>
+                        <p><strong>Nhà sản xuất:</strong> ${info.manufacturer}</p>
+                        <p><strong>Đối tượng:</strong> ${info.target}</p>
+                        <p><strong>Chống chỉ định:</strong> ${info.contraindications}</p>
+                        <p><strong>Liều dùng:</strong> ${info.dosage}</p>
+                        <p><strong>Đường dùng:</strong> ${info.route}</p>
+                        <p><strong>Số mũi tiêm:</strong> ${info.doses}</p>
+                        <p><strong>Khoảng cách giữa các mũi:</strong> ${info.interval}</p>
+                    `;
+                    resultsDiv.style.display = 'block';
+                } else {
+                    resultsDiv.style.display = 'none';
+                }
+            });
         });
 
         function addPreviousVaccine() {
