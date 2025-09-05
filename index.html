@@ -547,126 +547,6 @@
                 </div>
             </div>
             
-            <div class="tab-content" id="adult-tab">
-                <h2>Vaccine cho người lớn <span class="vaccine-badge badge-optional">Khuyến nghị</span></h2>
-                <p>Chọn các vaccine khuyến nghị cho người lớn:</p>
-                
-                <div class="form-group">
-                    <label for="adultBirthdate">Ngày sinh:</label>
-                    <input type="date" id="adultBirthdate" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="gender">Giới tính:</label>
-                    <select id="gender">
-                        <option value="male">Nam</option>
-                        <option value="female">Nữ</option>
-                    </select>
-                </div>
-                
-                <div class="checkbox-group">
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="influenza"> Cúm
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh cúm mùa. Tiêm nhắc hàng năm cho tất cả người lớn.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="tdap"> Uốn ván-Bạch hầu-Ho gà (Tdap)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh uốn ván, bạch hầu và ho gà. Tiêm nhắc mỗi 10 năm.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="hpv"> HPV
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng ung thư do HPV. Tiêm cho người lớn đến 45 tuổi nếu chưa tiêm đủ liều.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="mmr"> Sởi-Quai bị-Rubella (MMR)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh sởi, quai bị và rubella. Tiêm cho người lớn sinh sau năm 1957 nếu chưa tiêm đủ liều.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="hepatitisA"> Viêm gan A
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm gan A. Tiêm 2 liều cách nhau 6-12 tháng.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="hepatitisB"> Viêm gan B
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm gan B. Tiêm 3 liều theo lịch 0-1-6 tháng.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="pneumococcal"> Phế cầu
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh do phế cầu khuẩn. Khuyến nghị cho người từ 65 tuổi trở lên hoặc có bệnh nền.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="shingles"> Zona (Shingles)
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh zona (herpes zoster). Khuyến nghị cho người từ 50 tuổi trở lên.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="covid19"> COVID-19
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh COVID-19. Tiêm nhắc theo khuyến cáo mới nhất.</span>
-                            </div>
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                        <label>
-                            <input type="checkbox" name="adultVaccines" value="meningococcal"> Não mô cầu
-                            <div class="tooltip">
-                                <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm màng não do não mô cầu. Khuyến nghị cho một số đối tượng nguy cơ cao.</span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            
             <button type="button" id="calculateBtn">🔍 Xem lịch tiêm</button>
             
             <div id="results">
@@ -793,6 +673,7 @@
                 { name: "Sởi (mũi 1)", age: 270, ageText: "9 tháng", description: "Phòng bệnh sởi", interval: null },
                 { name: "IPV (mũi 2)", age: 270, ageText: "9 tháng", description: "Phòng bệnh bại liệt (tiêm)", interval: 120 },
                 { name: "Sởi - Rubella (mũi 2)", age: 540, ageText: "18 tháng", description: "Phòng bệnh sởi và rubella", interval: 270 },
+                { name: "Bại liệt (mũi 4)", age: 540, ageText: "18 tháng", description: "Phòng bệnh bại liệt", interval: 270 },
                 { name: "DPT (mũi 4)", age: 540, ageText: "18 tháng", description: "Phòng bạch hầu, ho gà, uốn ván", interval: 420 },
                 { name: "Viêm não Nhật Bản (mũi 1)", age: 365, ageText: "12 tháng", description: "Phòng viêm não Nhật Bản", interval: null },
                 { name: "Viêm não Nhật Bản (mũi 2)", age: 380, ageText: "Sau mũi 1 1-2 tuần", description: "Phòng viêm não Nhật Bản", interval: 15 },
@@ -1477,7 +1358,7 @@
         function subtractMonths(date, months) {
             const newDate = new Date(date);
             newDate.setMonth(newDate.getMonth() - months);
-            newDate.setDate(21);
+            newDate.setDate(date.getDate());
             return newDate;
         }
 
