@@ -1293,14 +1293,10 @@
                     vaccineDate.setDate(vaccineDate.getDate() + vaccine.age);
                     vaccineDateStr = vaccineDate.toLocaleDateString('vi-VN');
                     
-                    if (vaccine.age <= currentAge - 1) {
+                    if (vaccine.age <= currentAge - 7) {
                         status = 'Cần tiêm gấp';
                         statusClass = 'status-due';
                         row.classList.add('due');
-                    } else if (vaccine.age = currentAge) {
-                        status = 'Đến lịch';
-                        statusClass = 'status-coming';
-                        row.classList.add('coming');
                     } else if (vaccine.age <= currentAge + 30) {
                         status = 'Sắp đến lịch';
                         statusClass = 'status-coming';
