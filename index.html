@@ -546,6 +546,109 @@
                     </div>
                 </div>
             </div>
+
+            <div class="tab-content" id="adult-tab">
+                <h2>Tiêm chủng cho người lớn <span class="vaccine-badge badge-optional">Khuyến cáo</span></h2>
+                <p>Chọn các vaccine mà bạn muốn kiểm tra lịch tiêm:</p>
+                
+                <div class="form-group">
+                    <label for="adultBirthdate">Ngày sinh:</label>
+                    <input type="date" id="adultBirthdate" required>
+                    <p class="tip">Nhập chính xác ngày sinh để tính toán lịch tiêm phù hợp</p>
+                </div>
+                
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <label>
+                            <input type="checkbox" name="adultVaccines" value="influenza"> Cúm (18+ tuổi)
+                            <div class="tooltip">
+                                <span class="info-icon">i</span>
+                                <span class="tooltiptext">Phòng bệnh cúm mùa. Tiêm hàng năm.</span>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <label>
+                            <input type="checkbox" name="adultVaccines" value="tdap"> Uốn ván-Bạch hầu-Ho gà (Tdap) (18+ tuổi)
+                            <div class="tooltip">
+                                <span class="info-icon">i</span>
+                                <span class="tooltiptext">Tiêm nhắc mỗi 10 năm.</span>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <label>
+                            <input type="checkbox" name="adultVaccines" value="hpv"> HPV (9-45 tuổi)
+                            <div class="tooltip">
+                                <span class="info-icon">i</span>
+                                <span class="tooltiptext">Nếu chưa tiêm đủ liều.</span>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <label>
+                            <input type="checkbox" name="adultVaccines" value="mmr"> Sởi-Quai bị-Rubella (MMR) (18+ tuổi)
+                            <div class="tooltip">
+                                <span class="info-icon">i</span>
+                                <span class="tooltiptext">Nếu sinh sau 1957 và chưa tiêm.</span>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <label>
+                            <input type="checkbox" name="adultVaccines" value="hepatitisA"> Viêm gan A (18+ tuổi)
+                            <div class="tooltip">
+                                <span class="info-icon">i</span>
+                                <span class="tooltiptext">2 liều cách nhau 6-12 tháng.</span>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <label>
+                            <input type="checkbox" name="adultVaccines" value="hepatitisB"> Viêm gan B (18+ tuổi)
+                            <div class="tooltip">
+                                <span class="info-icon">i</span>
+                                <span class="tooltiptext">3 liều theo lịch 0-1-6 tháng.</span>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <label>
+                            <input type="checkbox" name="adultVaccines" value="pneumococcal"> Phế cầu (65+ tuổi)
+                            <div class="tooltip">
+                                <span class="info-icon">i</span>
+                                <span class="tooltiptext">Hoặc có bệnh nền.</span>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <label>
+                            <input type="checkbox" name="adultVaccines" value="shingles"> Zona (Shingles) (50+ tuổi)
+                            <div class="tooltip">
+                                <span class="info-icon">i</span>
+                                <span class="tooltiptext">2 liều cách nhau 2-6 tháng.</span>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <label>
+                            <input type="checkbox" name="adultVaccines" value="meningococcal"> Não mô cầu (18+ tuổi)
+                            <div class="tooltip">
+                                <span class="info-icon">i</span>
+                                <span class="tooltiptext">Đối tượng nguy cơ cao.</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
             
             <button type="button" id="calculateBtn">🔍 Xem lịch tiêm</button>
             
@@ -1293,11 +1396,17 @@
                     vaccineDate.setDate(vaccineDate.getDate() + vaccine.age);
                     vaccineDateStr = vaccineDate.toLocaleDateString('vi-VN');
                     
-                    if (vaccine.age <= currentAge - 7) {
+                    const daysToDue = vaccine.age - currentAge;
+                    
+                    if (daysToDue < 0) {
                         status = 'Cần tiêm gấp';
                         statusClass = 'status-due';
                         row.classList.add('due');
-                    } else if (vaccine.age <= currentAge + 30) {
+                    } else if (daysToDue === 0) {
+                        status = 'Đến lịch';
+                        statusClass = 'status-complete';
+                        row.classList.add('complete');
+                    } else if (daysToDue <= 30) {
                         status = 'Sắp đến lịch';
                         statusClass = 'status-coming';
                         row.classList.add('coming');
