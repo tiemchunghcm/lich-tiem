@@ -735,8 +735,7 @@
                     <option value="">-- Chọn vắc xin --</option>
                     <option value="bcg">BCG (Phòng lao)</option>
                     <option value="engerixb">Engerix B (Viêm gan B)</option>
-                    <option value="rota">Rotavin</option>
-                    <option value="infanrix">Infanrix Hexa (6 trong 1)</option>
+                    <option value="infanrix"> Infanrix Hexa (6 trong 1)</option>
                     <option value="ipv">Imovax Polio (IPV - Bại liệt)</option>
                     <option value="mvvac">MVVAC (Sởi)</option>
                     <option value="mrvac">MRVAC (Sởi - Rubella)</option>
@@ -751,6 +750,7 @@
                     <option value="menactra">Menactra (Não mô cầu)</option>
                     <option value="typhimvi">Typhim Vi (Thương hàn)</option>
                     <option value="verorab">Verorab (Dại)</option>
+                    <option value="rotavin">Rotavin (Rotavirus)</option>
                 </select>
             </div>
            
@@ -767,8 +767,10 @@
                 { name: "Viêm gan B sơ sinh (mũi 0)", age: 0, ageText: "Sơ sinh (trong 24h)", description: "Phòng viêm gan B", interval: null },
                 { name: "OPV (mũi 1)", age: 60, ageText: "2 tháng", description: "Phòng bệnh bại liệt (uống)", interval: null },
                 { name: "5 trong 1 (mũi 1)", age: 60, ageText: "2 tháng", description: "Phòng bạch hầu, ho gà, uốn ván, viêm gan B, Hib", interval: null },
+                { name: "Rota (mũi 1)", age: 60, ageText: "2 tháng", description: "Phòng tiêu chảy do Rotavirus", interval: null },
                 { name: "OPV (mũi 2)", age: 90, ageText: "3 tháng", description: "Phòng bệnh bại liệt (uống)", interval: 30 },
                 { name: "5 trong 1 (mũi 2)", age: 90, ageText: "3 tháng", description: "Phòng bạch hầu, ho gà, uốn ván, viêm gan B, Hib", interval: 30 },
+                { name: "Rota (mũi 2)", age: 90, ageText: "3 tháng", description: "Phòng tiêu chảy do Rotavirus", interval: 30 },
                 { name: "OPV (mũi 3)", age: 120, ageText: "4 tháng", description: "Phòng bệnh bại liệt (uống)", interval: 30 },
                 { name: "5 trong 1 (mũi 3)", age: 120, ageText: "4 tháng", description: "Phòng bạch hầu, ho gà, uốn ván, viêm gan B, Hib", interval: 30 },
                 { name: "IPV (mũi 1)", age: 150, ageText: "5 tháng", description: "Phòng bệnh bại liệt (tiêm)", interval: null },
@@ -783,9 +785,9 @@
             ],
             targetRequired: [
                 { name: "DPT 1", age_months: 2, catchUpOffset: -1, ageText: "2 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
-                { name: "Rota 1", age_months: 2, catchUpOffset: -1, ageText: "2 tháng", description: "Phòng tiêu chảy do Rotavirus cho trẻ <6 tháng tuổi" },
+                { name: "Rota 1", age_months: 2, catchUpOffset: -1, ageText: "2 tháng", description: "Phòng tiêu chảy do Rotavirus" },
                 { name: "DPT 2", age_months: 3, catchUpOffset: -1, ageText: "3 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
-                { name: "Rota 2", age_months: 3, catchUpOffset: -1, ageText: "Sau Rota 1 1 tháng", description: "Phòng tiêu chảy do Rotavirus cho trẻ <6 tháng tuổi" },
+                { name: "Rota 2", age_months: 3, catchUpOffset: -1, ageText: "3 tháng", description: "Phòng tiêu chảy do Rotavirus" },
                 { name: "DPT 3", age_months: 4, catchUpOffset: -1, ageText: "4 tháng", description: "Phòng bạch hầu, ho gà, uốn ván" },
                 { name: "IPV 1", age_months: 5, catchUpOffset: -1, ageText: "5 tháng", description: "Phòng bệnh bại liệt (tiêm)" },
                 { name: "IPV 2", age_months: 9, catchUpOffset: -1, ageText: "9 tháng", description: "Phòng bệnh bại liệt (tiêm)" },
@@ -853,18 +855,6 @@
                 route: "Tiêm bắp",
                 doses: "3-4 tùy lịch",
                 interval: "0, 1, 6 tháng"
-            },
-            rota: {
-                type: "Phòng tiêu chảy do Rotavirus",
-                name: "Rotavin",
-                nature: "Sống, giảm độc lực",
-                manufacturer: "Polyvac, Việt Nam",
-                target: "Trẻ từ 2 đến dưới 6 tháng tuổi",
-                contraindications: "Đang cập nhật",
-                dosage: "2ml",
-                route: "Uống",
-                doses: "2",
-                interval: "1 tháng sau mũi 1"
             },
             infanrix: {
                 type: "Phòng bạch hầu, ho gà, uốn ván, bại liệt, viêm gan B, Hib",
@@ -1045,6 +1035,18 @@
                 route: "Tiêm bắp",
                 doses: "3-5 tùy phác đồ",
                 interval: "Ngày 0,7,21 hoặc 28"
+            },
+            rotavin: {
+                type: "Phòng tiêu chảy do Rotavirus",
+                name: "Rotavin-M1",
+                nature: "Sống giảm độc lực",
+                manufacturer: "Polyvac, Việt Nam",
+                target: "Trẻ từ 6 tuần tuổi đến dưới 8 tháng",
+                contraindications: "Đang cập nhật",
+                dosage: "2.0 ml",
+                route: "Uống",
+                doses: "2",
+                interval: "60 ngày"
             }
         };
         let previousVaccines = [];
@@ -1173,6 +1175,7 @@
                             <option value="Não mô cầu">Não mô cầu</option>
                             <option value="Cúm">Cúm</option>
                             <option value="Thương hàn">Thương hàn</option>
+                            <option value="Rota">Rota</option>
                         </select>
                     </div>
                     <div style="flex: 1; min-width: 100px;">
