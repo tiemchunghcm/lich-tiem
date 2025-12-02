@@ -1443,8 +1443,14 @@
             vaccineSchedule.targetRequired.forEach(vaccine => {
                 const correctScheduleEndDate = subtractMonths(targetDate, vaccine.age_months);
                 const correctScheduleStartDate = subtractMonths(targetDate, vaccine.age_months + 1);
-                const catchUpEndDate = new Date(correctScheduleEndDate);
-                const catchUpStartDate = new Date(targetDate.getFullYear() + vaccine.catchUpOffset, 0, 1);
+                let catchUpEndDate = new Date(correctScheduleEndDate);
+                let catchUpStartDate;
+                if (vaccine.name.startsWith("Rota")) {
+                    catchUpStartDate = subtractMonths(targetDate, 6);
+                    catchUpStartDate.setDate(catchUpStartDate.getDate() + 1); // Adjust to next day as per example
+                } else {
+                    catchUpStartDate = new Date(targetDate.getFullYear() + vaccine.catchUpOffset, 0, 1);
+                }
                 const row = document.createElement('tr');
                 row.classList.add('suitable-row');
                 row.innerHTML = `
