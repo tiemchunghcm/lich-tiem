@@ -767,10 +767,10 @@
                 { name: "Viêm gan B sơ sinh (mũi 0)", age: 0, ageText: "Sơ sinh (trong 24h)", description: "Phòng viêm gan B", interval: null },
                 { name: "OPV (mũi 1)", age: 60, ageText: "2 tháng", description: "Phòng bệnh bại liệt (uống)", interval: null },
                 { name: "5 trong 1 (mũi 1)", age: 60, ageText: "2 tháng", description: "Phòng bạch hầu, ho gà, uốn ván, viêm gan B, Hib", interval: null },
-                { name: "Rota (mũi 1 - Rotavin-M1)", age: 60, ageText: "2 tháng", description: "Phòng tiêu chảy do Rotavirus (uống, 2 liều cách 4 tuần)", interval: null }, // Đã cập nhật chú thích
+                { name: "Rota (mũi 1 - Rotavin)", age: 60, ageText: "2 tháng", description: "Phòng tiêu chảy do Rotavirus (uống, 2 liều cách 4 tuần)", interval: null }, // Đã cập nhật chú thích
                 { name: "OPV (mũi 2)", age: 90, ageText: "3 tháng", description: "Phòng bệnh bại liệt (uống)", interval: 30 },
                 { name: "5 trong 1 (mũi 2)", age: 90, ageText: "3 tháng", description: "Phòng bạch hầu, ho gà, uốn ván, viêm gan B, Hib", interval: 30 },
-                { name: "Rota (mũi 2 - Rotavin-M1)", age: 90, ageText: "3 tháng", description: "Phòng tiêu chảy do Rotavirus (uống, 2 liều cách 4 tuần)", interval: 30 }, // Đã cập nhật chú thích
+                { name: "Rota (mũi 2 - Rotavin)", age: 90, ageText: "3 tháng", description: "Phòng tiêu chảy do Rotavirus (uống, 2 liều cách 4 tuần)", interval: 30 }, // Đã cập nhật chú thích
                 { name: "OPV (mũi 3)", age: 120, ageText: "4 tháng", description: "Phòng bệnh bại liệt (uống)", interval: 30 },
                 { name: "5 trong 1 (mũi 3)", age: 120, ageText: "4 tháng", description: "Phòng bạch hầu, ho gà, uốn ván, viêm gan B, Hib", interval: 30 },
                 { name: "IPV (mũi 1)", age: 150, ageText: "5 tháng", description: "Phòng bệnh bại liệt (tiêm)", interval: null },
@@ -1402,13 +1402,23 @@
                         status = 'Chưa đến lịch';
                         statusClass = '';
                     }
-                    // Special cases for BCG and Viêm gan B sơ sinh
+                    // Special cases for BCG and Viêm gan B sơ sinh and Rota
                     if (vaccine.name === "BCG" && currentAge > 365) {
                         status = 'Quá hạn';
                         statusClass = 'status-due';
                         row.classList.add('due');
                     }
                     if (vaccine.name === "Viêm gan B sơ sinh (mũi 0)" && currentAge > 7) {
+                        status = 'Quá hạn';
+                        statusClass = 'status-due';
+                        row.classList.add('due');
+                    }
+                    if (vaccine.name === "Rota (mũi 1 - Rotavin)" && currentAge > 180) {
+                        status = 'Quá hạn';
+                        statusClass = 'status-due';
+                        row.classList.add('due');
+                    }
+                    if (vaccine.name === "Rota (mũi 2 - Rotavin)" && currentAge > 180) {
                         status = 'Quá hạn';
                         statusClass = 'status-due';
                         row.classList.add('due');
