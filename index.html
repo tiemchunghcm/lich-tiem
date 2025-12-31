@@ -131,10 +131,10 @@
             font-weight: bold;
         }
         .status-coming {
-            color: #FCE38A;
+            color: #F0AD4E;
         }
         .status-complete {
-            color: #95E1D3;
+            color: #000000;
         }
         .status-suitable {
             color: #000000;
@@ -234,7 +234,7 @@
             display: flex;
             margin-bottom: 30px;
             border-bottom: 2px solid #7D5A50;
-            background-color: #F5F5F5;
+            background-color: #D7C0AE;
             border-radius: 10px 10px 0 0;
         }
         .main-tab {
@@ -351,7 +351,7 @@
         }
         .age-range {
             font-weight: bold;
-            color: #7D5A50;
+            color: #000000;
         }
         .suitable-row {
             background-color: #FFFFFF;
@@ -395,15 +395,15 @@
      
         <!-- Main Tabs -->
         <div class="main-tabs">
-            <div class="main-tab active" data-main-tab="schedule">Lịch tiêm chủng cho bé</div>
-            <div class="main-tab" data-main-tab="target">Xác định đối tượng tiêm</div>
+            <div class="main-tab active" data-main-tab="schedule">Lịch tiêm chủng</div>
+            <div class="main-tab" data-main-tab="target">Xác định đối tượng</div>
             <div class="main-tab" data-main-tab="vaccineInfo">Tra cứu thông tin vắc xin</div>
         </div>
      
-        <!-- Tab 1: Lịch tiêm chủng cho bé -->
+        <!-- Tab 1: Lịch tiêm chủng -->
         <div class="main-tab-content active" id="schedule-main-tab">
             <div class="tabs">
-                <div class="tab active" data-tab="required">Tiêm chủng cơ bản</div>
+                <div class="tab active" data-tab="required">Tiêm chủng bắt buộc</div>
                 <div class="tab" data-tab="optional">Tiêm chủng tự nguyện</div>
                 <div class="tab" data-tab="adult">Tiêm chủng người lớn</div>
             </div>
@@ -427,7 +427,7 @@
                 </div>
              
                 <div id="previousVaccines">
-                    <button type="button" id="addPreviousBtn">Thêm mũi tiêm đã thực hiện</button>
+                    <button type="button" id="addPreviousBtn">Thêm lịch sử tiêm</button>
                  
                     <div id="previousVaccinesList"></div>
                 </div>
@@ -445,8 +445,8 @@
             </div>
          
             <div class="tab-content" id="optional-tab">
-                <h2>Vaccine tự nguyện <span class="vaccine-badge badge-optional">Tự nguyện</span></h2>
-                <p>Chọn các vaccine bổ sung ngoài chương trình tiêm chủng mở rộng mà bạn muốn tiêm cho bé:</p>
+                <h2>Vaccine dịch vụ <span class="vaccine-badge badge-optional">Tự nguyện</span></h2>
+                <p>Chọn các vaccine bổ sung ngoài chương trình tiêm chủng mở rộng:</p>
              
                 <div class="form-group">
                     <label for="birthdate_optional">Ngày sinh của bé:</label>
@@ -457,40 +457,40 @@
                 <div class="checkbox-group">
                     <div class="checkbox-item">
                         <label>
-                            <input type="checkbox" name="optionalVaccines" value="pneumococcal"> Phế cầu (2 - 4 tháng)
+                            <input type="checkbox" name="optionalVaccines" value="pneumococcal"> Phế cầu (từ 2 tháng)
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm phổi, viêm màng não mủ, viêm tai giữa do phế cầu khuẩn. Tiêm từ 2 tháng tuổi, 3 mũi cơ bản + 1 mũi nhắc.</span>
+                                <span class="tooltiptext">Phòng viêm phổi, viêm màng não mủ, viêm tai giữa do phế cầu khuẩn. Phác đồ 1 - 3 mũi tuỳ loại vaccine.</span>
                             </div>
                         </label>
                     </div>
                  
                     <div class="checkbox-item">
                         <label>
-                            <input type="checkbox" name="optionalVaccines" value="chickenpox"> Thủy đậu (12 - 15 tháng)
+                            <input type="checkbox" name="optionalVaccines" value="chickenpox"> Thủy đậu (từ 9 tháng)
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh thủy đậu. Tiêm từ 12 tháng tuổi, 2 mũi cách nhau 3 tháng.</span>
+                                <span class="tooltiptext">Phòng bệnh thủy đậu. Tiêm từ 9 hoặc 12 tháng tuổi tuỳ loại vaccine, 2 mũi cách nhau 3 tháng.</span>
                             </div>
                         </label>
                     </div>
                  
                     <div class="checkbox-item">
                         <label>
-                            <input type="checkbox" name="optionalVaccines" value="influenza"> Cúm (6 tháng trở lên)
+                            <input type="checkbox" name="optionalVaccines" value="influenza"> Cúm (từ 6 tháng)
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh cúm mùa. Tiêm từ 6 tháng tuổi, tiêm nhắc hàng năm.</span>
+                                <span class="tooltiptext">Phòng bệnh cúm mùa. Tiêm nhắc hàng năm.</span>
                             </div>
                         </label>
                     </div>
                  
                     <div class="checkbox-item">
                         <label>
-                            <input type="checkbox" name="optionalVaccines" value="mmr"> Sởi - Quai bị - Rubella (12 tháng)
+                            <input type="checkbox" name="optionalVaccines" value="mmr"> Sởi - Quai bị - Rubella (từ 09 tháng)
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
-                                <span class="tooltiptext">Vaccine phối hợp phòng sởi, quai bị và rubella. Tiêm từ 12 tháng, 2 mũi cách nhau 3-6 tháng.</span>
+                                <span class="tooltiptext">Vaccine phối hợp phòng sởi, quai bị và rubella. Phác đồ 2 mũi cách nhau 3 tháng.</span>
                             </div>
                         </label>
                     </div>
@@ -500,37 +500,37 @@
                             <input type="checkbox" name="optionalVaccines" value="hpv"> HPV (9 - 45 tuổi)
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng ung thư cổ tử cung và các bệnh do HPV. Tiêm cho trẻ 9-45 tuổi, 3 mũi theo lịch 0-2-6 tháng.</span>
+                                <span class="tooltiptext">Phòng ung thư cổ tử cung và các bệnh do HPV. Phác đồ 2-3 mũi.</span>
                             </div>
                         </label>
                     </div>
                  
                     <div class="checkbox-item">
                         <label>
-                            <input type="checkbox" name="optionalVaccines" value="hepatitisA"> Viêm gan A (12 tháng trở lên)
+                            <input type="checkbox" name="optionalVaccines" value="hepatitisA"> Viêm gan A (từ 12 tháng)
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm gan A. Tiêm từ 12 tháng tuổi, 2 mũi cách nhau 6-12 tháng.</span>
+                                <span class="tooltiptext">Phòng viêm gan A. Phác đồ 2 mũi cách nhau 6 tháng.</span>
                             </div>
                         </label>
                     </div>
                  
                     <div class="checkbox-item">
                         <label>
-                            <input type="checkbox" name="optionalVaccines" value="meningococcal"> Não mô cầu (9 tháng trở lên)
+                            <input type="checkbox" name="optionalVaccines" value="meningococcal"> Não mô cầu (từ 2 tháng)
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng viêm màng não do não mô cầu. Tiêm từ 9 tháng tuổi, lịch tiêm phụ thuộc vào loại vaccine.</span>
+                                <span class="tooltiptext">Phòng viêm màng não do não mô cầu. Lịch tiêm tuỳ loại vaccine.</span>
                             </div>
                         </label>
                     </div>
                  
                     <div class="checkbox-item">
                         <label>
-                            <input type="checkbox" name="optionalVaccines" value="typhoid"> Thương hàn (2 tuổi trở lên)
+                            <input type="checkbox" name="optionalVaccines" value="typhoid"> Thương hàn (từ 2 tuổi)
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
-                                <span class="tooltiptext">Phòng bệnh thương hàn. Tiêm từ 2 tuổi trở lên, tiêm nhắc sau 3 năm.</span>
+                                <span class="tooltiptext">Phòng bệnh thương hàn. Tiêm nhắc sau 3 năm.</span>
                             </div>
                         </label>
                     </div>
@@ -559,7 +559,7 @@
                 <div class="checkbox-group">
                     <div class="checkbox-item">
                         <label>
-                            <input type="checkbox" name="adultVaccines" value="influenza"> Cúm (18+ tuổi)
+                            <input type="checkbox" name="adultVaccines" value="influenza"> Cúm
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
                                 <span class="tooltiptext">Phòng bệnh cúm mùa. Tiêm hàng năm.</span>
@@ -569,7 +569,7 @@
                  
                     <div class="checkbox-item">
                         <label>
-                            <input type="checkbox" name="adultVaccines" value="tdap"> Uốn ván-Bạch hầu-Ho gà (Tdap) (18+ tuổi)
+                            <input type="checkbox" name="adultVaccines" value="tdap"> Uốn ván-Bạch hầu-Ho gà (Tdap)
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
                                 <span class="tooltiptext">Tiêm nhắc mỗi 10 năm.</span>
@@ -582,24 +582,24 @@
                             <input type="checkbox" name="adultVaccines" value="hpv"> HPV (9-45 tuổi)
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
-                                <span class="tooltiptext">Nếu chưa tiêm đủ liều.</span>
+                                <span class="tooltiptext">Phòng ung thư cổ tử cung và các bệnh do HPV. Phác đồ 2-3 mũi.</span>
                             </div>
                         </label>
                     </div>
                  
                     <div class="checkbox-item">
                         <label>
-                            <input type="checkbox" name="adultVaccines" value="mmr"> Sởi-Quai bị-Rubella (MMR) (18+ tuổi)
+                            <input type="checkbox" name="adultVaccines" value="mmr"> Sởi-Quai bị-Rubella (MMR)
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
-                                <span class="tooltiptext">Nếu sinh sau 1957 và chưa tiêm.</span>
+                                <span class="tooltiptext">Phác đồ 2 mũi, cách nhau 1 tháng.</span>
                             </div>
                         </label>
                     </div>
                  
                     <div class="checkbox-item">
                         <label>
-                            <input type="checkbox" name="adultVaccines" value="hepatitisA"> Viêm gan A (18+ tuổi)
+                            <input type="checkbox" name="adultVaccines" value="hepatitisA"> Viêm gan A
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
                                 <span class="tooltiptext">2 liều cách nhau 6-12 tháng.</span>
@@ -609,7 +609,7 @@
                  
                     <div class="checkbox-item">
                         <label>
-                            <input type="checkbox" name="adultVaccines" value="hepatitisB"> Viêm gan B (18+ tuổi)
+                            <input type="checkbox" name="adultVaccines" value="hepatitisB"> Viêm gan B
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
                                 <span class="tooltiptext">3 liều theo lịch 0-1-6 tháng.</span>
@@ -619,10 +619,10 @@
                  
                     <div class="checkbox-item">
                         <label>
-                            <input type="checkbox" name="adultVaccines" value="pneumococcal"> Phế cầu (65+ tuổi)
+                            <input type="checkbox" name="adultVaccines" value="pneumococcal"> Phế cầu
                             <div class="tooltip">
                                 <span class="info-icon">i</span>
-                                <span class="tooltiptext">Hoặc có bệnh nền.</span>
+                                <span class="tooltiptext">Phác đồ 1 mũi.</span>
                             </div>
                         </label>
                     </div>
